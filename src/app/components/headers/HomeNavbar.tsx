@@ -16,7 +16,7 @@ export function HomeNavbar() {
             <NavLink to={"/"}>
               <img
                 style={{ width: "125px", height: "30px" }}
-                src="/icons/burakg"
+                src="/icons/burak.svg"
               />
             </NavLink>
           </Box>
@@ -28,20 +28,17 @@ export function HomeNavbar() {
           >
             <Box className={"hover-line"}>
               <NavLink to="/" activeClassName={"underline"}>
-                {" "}
                 Home
               </NavLink>
             </Box>
             <Box className={"hover-line"}>
               <NavLink to="/products" activeClassName={"underline"}>
-                {" "}
                 Products
               </NavLink>
             </Box>
             {authMember ? (
               <Box className={"hover-line"}>
                 <NavLink to="/orders" activeClassName={"underline"}>
-                  {" "}
                   Orders
                 </NavLink>
               </Box>
@@ -49,7 +46,6 @@ export function HomeNavbar() {
             {authMember ? (
               <Box className={"hover-line"}>
                 <NavLink to="/member-page" activeClassName={"underline"}>
-                  {" "}
                   My Page
                 </NavLink>
               </Box>
@@ -65,7 +61,6 @@ export function HomeNavbar() {
                   variant="contained"
                   style={{ background: "#3776CC", color: "#f8f8ff" }}
                 >
-                  {" "}
                   Login
                 </Button>
               </Box>
