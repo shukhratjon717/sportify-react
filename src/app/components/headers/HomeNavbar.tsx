@@ -16,8 +16,7 @@ export function HomeNavbar() {
             <NavLink to={"/"}>
               <img
                 style={{ width: "125px", height: "30px" }}
-                src="/icons/Sporify.jpeg"
-                alt=""
+                src="/icons/burakg"
               />
             </NavLink>
           </Box>
@@ -56,26 +55,26 @@ export function HomeNavbar() {
               </Box>
             ) : null}
             <Box className={"hover-line"}>
-              <NavLink to="/help" activeClassName={"underline"}>
-                {" "}
-                Help
-              </NavLink>
+              <NavLink to="/help"> Help</NavLink>
             </Box>
-            {/* {Basket} */}
+            {/* BASKET */}
+
             {!authMember ? (
-            <Box>
-              <Button
-                variant="contained"
-                style={{ background: "#3776CC", color: "#f8f8ff" }}
-              >
-                Login
-              </Button>
-            </Box>
+              <Box>
+                <Button
+                  variant="contained"
+                  style={{ background: "#3776CC", color: "#f8f8ff" }}
+                >
+                  {" "}
+                  Login
+                </Button>
+              </Box>
             ) : (
-                <img />
-            ) }
+              <img />
+            )}
           </Stack>
         </Stack>
+        <Stack>DETAIL</Stack>
       </Container>
     </div>
   );
