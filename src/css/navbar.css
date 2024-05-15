@@ -211,3 +211,82 @@
   border-radius: 20px;
   background-size: cover;
 }
+
+/** OtherNavbar */
+
+.other-navbar {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  background: url("/public/img/blurBanner.avif");
+  background-size: cover;
+}
+
+.other-navbar .navbar-container {
+  margin-top: 55px;
+}
+
+.other-navbar .navbar-container .menu {
+  height: 50px;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.other-navbar .navbar-container .menu .brand-logo {
+  font-size: 50px;
+  color: rgb(157, 0, 0);
+}
+
+
+.other-navbar .navbar-container .menu .links {
+  min-width: 700px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.other-navbar .navbar-container .menu .links .login-button {
+  background: #3776cc;
+  color: #f8f8ff;
+}
+
+.other-navbar .navbar-container .menu .user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 24px;
+}
+
+.other-navbar a {
+  text-decoration: none;
+}
+
+.other-navbar .hover-line a {
+  color: #241fc0;
+  z-index: 100;
+}
+
+.other-navbar .underline {
+  display: block;
+  content: "";
+  border-bottom: solid 2px #463a3a9f;
+}
+
+.other-navbar .hover-line:after {
+  display: block;
+  content: "";
+  border-bottom: solid 2px red;
+  transform: scaleX(0);
+  transition: transform 250ms ease-in-out;
+}
+
+.other-navbar .hover-line:hover:after {
+  transform: scaleX(1);
+}
+
+.other-navbar div.hover-line:after {
+  transform-origin: 0% 50%;
+}
