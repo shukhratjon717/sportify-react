@@ -12,17 +12,17 @@ const newProducts = [
   {
     desc: "Browse through our selection. Find your style and add items to your cart.",
     step: "Step1: ",
-    imagePath: "/img/jacket3.png",
+    imagePath: "/img/man-brand-clothes.jpeg",
   },
   {
     desc: "Select your favorite pieces. You're one step closer to the perfect fashion fusion.",
     step: "Step2: ",
-    imagePath: "/img/jacket2.jpg",
+    imagePath: "/img/Woman-brand-clothes.webp",
   },
   {
     desc: "Complete your purchase. Sit back and relax as we prepare your order!",
     step: "Step3: ",
-    imagePath: "/img/womanJ2.jpeg",
+    imagePath: "/img/Children-logo.jpeg",
   },
 ];
 
