@@ -9,10 +9,21 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import Divider from "../../components/divider";
 
 const newProducts = [
-  { productName: "Jacket", imagePath: "/img/jacket3.png" },
-  { productName: "Woman Jacket", imagePath: "/img/jacket2.jpg" },
-  { productName: "New balance", imagePath: "/img/womanJ2.jpeg" },
-  { productName: "Nike", imagePath: "/img/womanJacket.webp" },
+  {
+    desc: "Browse through our selection. Find your style and add items to your cart.",
+    step: "Step1: ",
+    imagePath: "/img/jacket3.png",
+  },
+  {
+    desc: "Select your favorite pieces. You're one step closer to the perfect fashion fusion.",
+    step: "Step2: ",
+    imagePath: "/img/jacket2.jpg",
+  },
+  {
+    desc: "Complete your purchase. Sit back and relax as we prepare your order!",
+    step: "Step3: ",
+    imagePath: "/img/womanJ2.jpeg",
+  },
 ];
 
 export default function NewDishes() {
@@ -20,41 +31,36 @@ export default function NewDishes() {
     <div className={"new-products-frame"}>
       <Container>
         <Stack className={"main"}>
-          <Box className={"category-title"}>Frsh Menu</Box>
+          <Box className={"category-title"}>Explore Our Collections</Box>
           <Stack className={"cards-frame"}>
             <CssVarsProvider>
-              {newProducts.map((ele, index) => {
-                return (
-                  <Card key={index} variant="outlined" className={"card"}>
-                    <CardOverflow>
-                      <div className="product-sale"> Normal Size </div>
-                      <AspectRatio ratio="1">
-                        <img src={ele.imagePath} alt="" />
-                      </AspectRatio>
-                    </CardOverflow>
+              {newProducts.length !== 0 ? (
+                newProducts.map((ele, index) => {
+                  return (
+                    <Card key={index} variant="outlined" className={"card"}>
+                      <CardOverflow>
+                        <AspectRatio ratio="1">
+                          <img src={ele.imagePath} alt="" />
+                        </AspectRatio>
+                      </CardOverflow>
 
-                    <CardOverflow variant="soft" className="product-detail">
-                      <Stack className="info">
-                        <Stack flexDirection={"row"}>
-                          <Typography className={"title"}>
-                            {ele.productName}
-                          </Typography>
-                          <Divider width="2" height="24" bg="#d9d9d9" />
-                          <Typography className={"price"}>$12</Typography>
+                      <CardOverflow variant="soft" className="product-detail">
+                        <Stack className="info">
+                          <Stack flexDirection={"row"}>
+                            <Typography className={"title"}>
+                              {ele.step}
+                              {ele.desc}
+                            </Typography>
+                          </Stack>
+                          <Stack></Stack>
                         </Stack>
-                        <Stack>
-                          <Typography className={"views"}>
-                            20
-                            <VisibilityIcon
-                              sx={{ fontSize: 20, marginLeft: "5px" }}
-                            />
-                          </Typography>
-                        </Stack>
-                      </Stack>
-                    </CardOverflow>
-                  </Card>
-                );
-              })}
+                      </CardOverflow>
+                    </Card>
+                  );
+                })
+              ) : (
+                <Box className="no-data">New products are not availle!</Box>
+              )}
             </CssVarsProvider>
           </Stack>
         </Stack>
