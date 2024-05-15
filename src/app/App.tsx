@@ -1,17 +1,18 @@
 import React from "react";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import { Link, Route, Switch, useLocation } from "react-router-dom";
-
-import { HomeNavbar } from "./components/headers/HomeNavbar";
 import { OtherNavbar } from "./components/headers/OtherNavbar";
-import { Footer } from "./components/footer";
-import { ProductsPage } from "./screns/productsPage";
-import { OrdersPage } from "./screns/ordersPage";
-import { UserPage } from "./screns/userPage";
-import { HomePage } from "./screns/homePage";
-import { HelpPage } from "./screns/helpPage";
+
+import Footer from "./components/footer";
+import HomeNavbar from "./components/headers/HomeNavbar";
+import ProductsPage from "./screns/productsPage";
+import OrdersPage from "./screns/ordersPage";
+import UserPage from "./screns/userPage";
+import HelpPage from "./screns/helpPage";
+import HomePage from "./screns/homePage";
 import "../css/app.css";
 import "../css/navbar.css";
+import "../css/footer.css";
 
 function App() {
   const location = useLocation();
