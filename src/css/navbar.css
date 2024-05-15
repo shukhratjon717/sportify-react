@@ -2,8 +2,45 @@
   width: 100%;
   height: 773px;
   display: flex;
-  background: url("/public/img/banner.webp");
+  background: url("/public/img/blurBanner.avif");
   background-size: cover;
+}
+
+.home-navbar .navbar-container {
+  margin-top: 55px;
+  height: 642px;
+}
+
+.home-navbar .navbar-container .menu {
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-navbar .navbar-container .menu .brand-logo {
+  width: 125px;
+  height: 30px;
+}
+
+.home-navbar .navbar-container .menu .links {
+  min-width: 700px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-navbar .navbar-container .menu .links .login-button {
+  background: #45556b;
+  color: #f8f8ff;
+}
+
+.home-navbar .navbar-container .menu .user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 24px;
 }
 
 .home-navbar a {
@@ -11,20 +48,20 @@
 }
 
 .home-navbar .hover-line a {
-  color: #f8f8ff;
+  color: #241fc0;
   z-index: 100;
 }
 
 .home-navbar .underline {
   display: block;
   content: "";
-  border-bottom: solid 2px #d7b686;
+  border-bottom: solid 2px #463a3a9f;
 }
 
 .home-navbar .hover-line:after {
   display: block;
   content: "";
-  border-bottom: solid 2px #d7b686;
+  border-bottom: solid 2px red;
   transform: scaleX(0);
   transition: transform 250ms ease-in-out;
 }
@@ -35,4 +72,142 @@
 
 .home-navbar div.hover-line:after {
   transform-origin: 0% 50%;
+}
+
+.home-navbar .navbar-container .header-frame {
+  margin-top: 142px;
+  height: 462px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.home-navbar .navbar-container .header-frame .detail {
+  width: 510px;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-navbar .navbar-container .header-frame .detail .head-main-txt {
+  width: 450px;
+  height: 150px;
+  /* border: 1px solid red; */
+  /* margin-left: 350px; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto Serif";
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.75px;
+  color: #1f2303;
+}
+
+.home-navbar .navbar-container .header-frame .detail .wel-txt {
+  width: 510px;
+  height: 42px;
+  font-family: "Roboto Serif";
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.54px;
+  color: #d7b686;
+}
+
+.home-navbar .navbar-container .header-frame .detail .service-txt {
+  margin-top: 23px;
+  width: 153px;
+  height: 23px;
+  font-family: "Roboto Serif";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.3px;
+  color: #d5d5d5;
+}
+
+.home-navbar .navbar-container .detail .signup {
+  margin-top: 73px;
+}
+
+.home-navbar .navbar-container .detail .signup .signup-button {
+  width: 210px;
+  height: 60px;
+  border-radius: 4px;
+  background: #1976d2;
+  color: #f8f8ff;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.home-navbar .navbar-container .logo-frame {
+  margin-top: -43px;
+  margin-bottom: 43px;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-navbar .navbar-container .logo-frame .logo-img {
+  width: auto;
+  margin-left: 100px;
+  font-size: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  color: rgba(245, 47, 2, 0.871);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 5px;
+
+  margin-right: 70px;
+}
+
+
+.home-navbar .navbar-container .logo-holder {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-navbar .navbar-container .logo-holder .logo-img {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.home-navbar .navbar-container .logo-holder .logo-img1 {
+  background: url("/public/img/man-brand-clothes.jpeg");
+  width: 30%;
+  height: 200px;
+  display: flex;
+  background-size: cover;
+  border-radius: 20px;
+}
+
+.home-navbar .navbar-container .logo-holder .logo-img2 {
+  background: url("/public/img/Woman-brand-clothes.webp");
+  width: 30%;
+  height: 200px;
+  display: flex;
+  border-radius: 20px;
+  background-size: cover;
+}
+
+.home-navbar .navbar-container .logo-holder .logo-img3 {
+  background: url("/public/img/Children-logo.jpeg");
+  width: 30%;
+  height: 200px;
+  display: flex;
+  border-radius: 20px;
+  background-size: cover;
 }
