@@ -20,7 +20,7 @@ export default function ActiveUsers() {
           <Box className={"active-category-title"}>Active Users </Box>
           <Stack className={"active-users-cards-frame"}>
             <CssVarsProvider>
-              {activeUsers.length === 0 ? (
+              {activeUsers.length !== 0 ? (
                 activeUsers.map((ele, index) => {
                   return (
                     <Card
