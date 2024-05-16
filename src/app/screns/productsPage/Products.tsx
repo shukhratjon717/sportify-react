@@ -9,16 +9,20 @@ import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-
 const products = [
-  { productName: "Cutlet", imagePath: "/img/cutlet.webp" },
-  { productName: "Kebab", imagePath: "/img/kebab-fresh.webp" },
-  { productName: "Kebab", imagePath: "/img/kebab.webp" },
-  { productName: "Lavash", imagePath: "/img/lavash.webp" },
-  { productName: "Lavash", imagePath: "/img/lavash.webp" },
-  { productName: "Cutlet", imagePath: "/img/cutlet.webp" },
-  { productName: "Kebab", imagePath: "/img/kebab.webp" },
-  { productName: "Kebab", imagePath: "/img/kebab-fresh.webp" },
+  { productName: "Jacket", imagePath: "/img/jacket3.png" },
+  { productName: "man Jacket", imagePath: "/img/jacket2.jpg" },
+  { productName: "New balance", imagePath: "/img/womanJ2.jpeg" },
+  { productName: "Nike", imagePath: "/img/womanJacket.webp" },
+  { productName: "Jacket", imagePath: "/img/jacket3.png" },
+  { productName: "man Jacket", imagePath: "/img/jacket2.jpg" },
+  { productName: "New balance", imagePath: "/img/womanJ2.jpeg" },
+  { productName: "Nike", imagePath: "/img/womanJacket.webp" },
+];
+
+const brandProducts = [
+  { productName: "man Jacket", imagePath: "/img/jacket2.jpg" },
+  { productName: "man Jacket", imagePath: "/img/jacket2.jpg" },
 ];
 export default function Products() {
   return (
@@ -30,7 +34,7 @@ export default function Products() {
           //   className={"products-frame"}
         >
           <Stack className={"upper-frame"}>
-            <Box className={"title"}>Burak Restaurant</Box>
+            <Box className={"title"}> Sportify Products</Box>
             <Box className={"search-bar"}>
               <Stack className={"ractangle"}>
                 <input className={"input"} placeholder="type here"></input>
@@ -44,6 +48,7 @@ export default function Products() {
             </Box>
           </Stack>
           <Stack className={"dishes-filter-section"}>
+            <div className="product-filter">Filter</div>
             <Stack className={"dishes-filter-box"}>
               <Button
                 variant={"contained"}
@@ -73,19 +78,19 @@ export default function Products() {
             <Stack className={"product-category"}>
               <div className={"category-main"}>
                 <Button variant={"contained"} color={"secondary"}>
-                  Others
+                  Jackets
                 </Button>
                 <Button variant={"contained"} color={"secondary"}>
-                  Dessert
+                  Coats
+                </Button>
+                <Button className="t-shirt" variant={"contained"} color={"secondary"}>
+                  T-shirts
                 </Button>
                 <Button variant={"contained"} color={"secondary"}>
-                  Drink
-                </Button>
-                <Button variant={"contained"} color={"secondary"}>
-                  Salad
+                  Shoes
                 </Button>
                 <Button variant={"contained"} color={"primary"}>
-                  Dish
+                  Set
                 </Button>
               </div>
             </Stack>
@@ -134,7 +139,7 @@ export default function Products() {
                           {product.productName}
                         </span>
                         <div className={"product1-desc"}>
-                          ` <MonetizationOnIcon />
+                          <MonetizationOnIcon />
                           {12}
                         </div>
                       </Box>
@@ -167,20 +172,51 @@ export default function Products() {
       <div className="brands">
         <Container>
           <Stack className="brands-container">
-            <Stack className="brands-title">Our Family Brands </Stack>
+            {/* <Stack className="brands-title">Our Family Brands </Stack> */}
             <Stack className="brand-img">
-              <Box className={"brand-img-box"}>
-                <img className="brands-img" src="/img/gurme.webp" />
-              </Box>
-              <Box className={"brand-img-box"}>
-                <img className="brands-img" src="/img/seafood.webp" />
-              </Box>
-              <Box className={"brand-img-box"}>
-                <img className="brands-img" src="/img/sweets.webp" />
-              </Box>
-              <Box className={"brand-img-box"}>
-                <img className="brands-img" src="/img/doner.webp" />
-              </Box>
+              <Stack>
+                <div className={"brands-title"}>
+                  Check out our latest trends
+                </div>
+                m{"\n"}
+                <div className={"brand-paragraph"}>
+                  Explore the latest fashion trends and styles with our diverse
+                  collection. From casual to formal wear, we have something for
+                  every occasion. Our products are made from premium quality
+                  materials and are designed to keep you stylish and comfortable
+                  all day long. Start shopping now!
+                </div>
+              </Stack>
+              {brandProducts.length !== 0 ? (
+                brandProducts.map((product, index) => {
+                  return (
+                    <Stack key={index} className={"brand-card"}>
+                      <Stack
+                        className={"brands-img"}
+                        sx={{
+                          backgroundImage: `url(${product.imagePath})`,
+                          backgroundSize: "cover",
+                          backgroundRepeat: "no-repeat",
+                          backgroundPosition: "center",
+                        }}
+                      ></Stack>
+                      <Box className={"brand-desc"}>
+                        <span className={"brand-title"}>
+                          {product.productName}
+                        </span>
+                        <div className={"brand-money-holder"}>
+                          <div className={"brand-money"}>
+                            <MonetizationOnIcon />
+                            {12}
+                          </div>
+                        </div>
+                      </Box>
+                    </Stack>
+                  );
+                })
+              ) : (
+                <Box className="no-data"> Products are not availabe!</Box>
+              )}
             </Stack>
           </Stack>
         </Container>

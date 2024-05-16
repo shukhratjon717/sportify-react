@@ -2,8 +2,8 @@ import React from "react";
 
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import ChosenProduct from "./ChosenProduct";
-import "../../../css/products.css";
 import Products from "./Products";
+import "../../../css/products.css";
 
 export default function ProductsPage() {
   const products = useRouteMatch();
@@ -14,8 +14,9 @@ export default function ProductsPage() {
         <Route path={`${products.path}/:productId`}>
           <ChosenProduct />
         </Route>
-        <Route path={`${products.path}`}></Route>
-        <Products />
+        <Route path={`${products.path}`}>
+          <Products />
+        </Route>
       </Switch>
     </div>
   );
