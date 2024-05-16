@@ -1,8 +1,9 @@
 import React from "react";
+
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import { Container } from "@mui/material";
-import Products from "./Products";
 import ChosenProduct from "./ChosenProduct";
+import "../../../css/products.css";
+import Products from "./Products";
 
 export default function ProductsPage() {
   const products = useRouteMatch();
@@ -13,7 +14,7 @@ export default function ProductsPage() {
         <Route path={`${products.path}/:productId`}>
           <ChosenProduct />
         </Route>
-        <Route path={`${products.path}/:productId`}></Route>
+        <Route path={`${products.path}`}></Route>
         <Products />
       </Switch>
     </div>
