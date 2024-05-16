@@ -3,18 +3,21 @@ import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
 
 export function OtherNavbar() {
-  const authMember = null;
+  const authMember = true;
   return (
     <div className="other-navbar">
+      <div className="other-navbar-header">
+        Use Code Sportify717for 10% discount of your first order
+      </div>
       <Container className="navbar-container">
         <Stack className="menu">
           <Box className={"brand-holder"}>
             <NavLink to={"/"}>
-              <img className="brand-logo" src="/icons/shopping-cart.png" />
-              <div>Sportify</div>
+              {/* <img className="brand-logo" src="/icons/shopping-cart.png" /> */}
             </NavLink>
           </Box>
           <Stack className="links">
+              <div className={"other-navbar-title"}>Trendy Fashion</div>
             <Box className={"hover-line"}>
               <NavLink to="/">Home</NavLink>
             </Box>
@@ -59,6 +62,17 @@ export function OtherNavbar() {
             )}
           </Stack>
         </Stack>
+        <div>
+          <div>
+            <img className={"body-img2"} />
+          </div>
+          <div className={"body-title"}> 
+            <p>Summer Dress</p>
+          </div>
+          <div>
+            <img className={"body-img"} />
+          </div>
+        </div>
       </Container>
     </div>
   );

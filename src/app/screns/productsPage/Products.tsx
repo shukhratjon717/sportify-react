@@ -72,6 +72,30 @@ export default function Products() {
                 Views
               </Button>
             </Stack>
+
+            <Stack className={"dishes-filter-box2"}>
+              <Button
+                variant={"contained"}
+                color={"primary"}
+                className={"order"}
+              >
+                Man
+              </Button>
+              <Button
+                variant={"contained"}
+                color={"secondary"}
+                className={"order"}
+              >
+                Woman
+              </Button>
+              <Button
+                variant={"contained"}
+                color={"secondary"}
+                className={"order"}
+              >
+                Children
+              </Button>
+            </Stack>
           </Stack>
 
           <Stack className={"list-category-section"}>
@@ -83,7 +107,11 @@ export default function Products() {
                 <Button variant={"contained"} color={"secondary"}>
                   Coats
                 </Button>
-                <Button className="t-shirt" variant={"contained"} color={"secondary"}>
+                <Button
+                  className="t-shirt"
+                  variant={"contained"}
+                  color={"secondary"}
+                >
                   T-shirts
                 </Button>
                 <Button variant={"contained"} color={"secondary"}>
@@ -109,8 +137,6 @@ export default function Products() {
                           backgroundPosition: "center",
                         }}
                       >
-                        <div className={"product-sale"}>Normal size</div>
-
                         <Stack className={"hoverable"}>
                           <Button className={"shop1-btn"}>
                             <img
