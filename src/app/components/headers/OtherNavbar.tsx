@@ -7,7 +7,7 @@ export function OtherNavbar() {
   return (
     <div className="other-navbar">
       <div className="other-navbar-header">
-        Use Code Sportify717for 10% discount of your first order
+        Use Code Sportify717for 10% off your first order
       </div>
       <Container className="navbar-container">
         <Stack className="menu">
@@ -17,7 +17,7 @@ export function OtherNavbar() {
             </NavLink>
           </Box>
           <Stack className="links">
-              <div className={"other-navbar-title"}>Trendy Fashion</div>
+            <div className={"other-navbar-title"}>Trendy Fashion</div>
             <Box className={"hover-line"}>
               <NavLink to="/">Home</NavLink>
             </Box>
@@ -66,7 +66,7 @@ export function OtherNavbar() {
           <div>
             <img className={"body-img2"} />
           </div>
-          <div className={"body-title"}> 
+          <div className={"body-title"}>
             <p>Summer Dress</p>
           </div>
           <div>
