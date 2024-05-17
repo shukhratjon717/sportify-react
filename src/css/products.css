@@ -211,6 +211,29 @@
   opacity: 1;
   transition: opacity 0.5s ease;
 }
+
+.products-page
+  .products
+  .list-category-section
+  .product-wrapper
+  .product-img
+  :before {
+  background: rgb(0, 0, 0.5);
+  width: 273px;
+  height: 275px;
+  border-radius: 0px 45px 0px 0px;
+  opacity: 0;
+}
+
+.products-page
+  .products
+  .list-category-section
+  .product-wrapper
+  .product-img
+  :hover
+  ::before {
+  opacity: 1;
+}
 .products-page .products .list-category-section .product-wrapper .product-img {
   width: 253px;
   height: 275px;

@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
 
 export default function HomeNavbar() {
-  const authMember = null;
+  const authMember = true;
   return (
     <div className="home-navbar">
       <Container className="navbar-container">
@@ -43,10 +43,13 @@ export default function HomeNavbar() {
           <Basket />
 
           {!authMember ? (
-            <Box>
+            <Box className={"login-holder"}>
               <Button variant="contained" className="login-button">
-                Login
+                Get Started
               </Button>
+              {/* <Button variant="contained" className="login-button">
+                Login
+              </Button> */}
             </Box>
           ) : (
             <img
@@ -61,13 +64,7 @@ export default function HomeNavbar() {
           <Stack className={"detail"}>
             <Box className={"head-main-txt"}>Discover trends with Sportify</Box>
 
-            <Box className={"signup"}>
-              {!authMember ? (
-                <Button variant={"contained"} className={"signup-button"}>
-                  SIGN UP
-                </Button>
-              ) : null}
-            </Box>
+            <Box className={"signup"}></Box>
           </Stack>
           <Box className={"logo-holder"}>
             <Box className={"logo-frame"}>

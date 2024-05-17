@@ -31,7 +31,7 @@ export default function Products() {
         <Stack
           flexDirection={"column"}
           alignItems={"center"}
-          //   className={"products-frame"}
+            className={"products-frame"}
         >
           <Stack className={"upper-frame"}>
             <Box className={"title"}> Sportify Products</Box>
