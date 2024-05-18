@@ -46,4 +46,5 @@ export enum ProductCollection {
   WOMAN = "WOMAN",
   CHIDREN = "CHILDREN",
   UNISEX = "UNISEX",
+  SET= "SET",
 }

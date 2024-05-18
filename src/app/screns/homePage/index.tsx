@@ -5,22 +5,22 @@ import NewProducts from "./NewProduts";
 import Advertisement from "./Advertisement";
 import ActiveUsers from "./ActiveUsers";
 import Events from "./Events";
-import "../../../css/home.css";
 import { useEffect } from "react";
-import "../../../css/home.css";
 
 import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 import { Product } from "../../../lib/types/product";
-import { setPopularProducts } from "./slice";
+import { setNewProducts, setPopularProducts } from "./slice";
 import { retrievePopularProducts } from "./selector";
 import { ProductCollection } from "../../../lib/enums/product.enum";
 import ProductService from "../../services/ProductService";
+import "../../../css/home.css";
 
 /** REDUX SLICE & SELECTOR */
 const actionDistatch = (dispatch: Dispatch) => ({
   setPopularDishes: (data: Product[]) => dispatch(setPopularProducts(data)),
+  setNewProducts: (data: Product[]) => dispatch(setNewProducts(data)),
 });
 const popularProductsRetriver = createSelector(
   retrievePopularProducts,
@@ -30,7 +30,7 @@ const popularProductsRetriver = createSelector(
 export default function HomePage() {
   // Selector: will store the data
 
-  const { setPopularDishes } = actionDistatch(useDispatch());
+  const { setPopularDishes, setNewProducts } = actionDistatch(useDispatch());
 
   useEffect(() => {
     // bacend server data fetchb => Data
@@ -44,6 +44,18 @@ export default function HomePage() {
       })
       .then((data) => {
         setPopularDishes(data);
+      })
+      .catch((err) => console.log(err));
+
+      product
+      .getProducts({
+        page: 1,
+        limit: 4,
+        order: "createdAt",
+        productCollection: ProductCollection.SET,
+      })
+      .then((data) => {
+        setNewProducts(data);
       })
       .catch((err) => console.log(err));
   }, []);

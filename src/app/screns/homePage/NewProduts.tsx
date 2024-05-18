@@ -1,32 +1,32 @@
 import React from "react";
-import { Box, Container, Stack } from "@mui/material"; //
+import { Box, Container, Stack } from "@mui/material";
 import AspectRatio from "@mui/joy/AspectRatio";
-import Card from "@mui/joy/Card"; //
+import Card from "@mui/joy/Card";
 import CardOverflow from "@mui/joy/CardOverflow";
-import Typography from "@mui/joy/Typography"; //
-import { CssVarsProvider } from "@mui/joy/styles"; //
+import Typography from "@mui/joy/Typography";
+import { CssVarsProvider } from "@mui/joy/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Divider from "../../components/divider";
 
-const newProducts = [
-  {
-    desc: "Browse through our selection. Find your style and add items to your cart.",
-    step: "Step1: ",
-    imagePath: "/img/man-brand-clothes.jpeg",
-  },
-  {
-    desc: "Select your favorite pieces. You're one step closer to the perfect fashion fusion.",
-    step: "Step2: ",
-    imagePath: "/img/Woman-brand-clothes.webp",
-  },
-  {
-    desc: "Complete your purchase. Sit back and relax as we prepare your order!",
-    step: "Step3: ",
-    imagePath: "/img/Children-logo.jpeg",
-  },
-];
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { Product } from "../../../lib/types/product";
+import { serverApi } from "../../../lib/config";
+import { ProductCollection } from "../../../lib/enums/product.enum";
+import { retrieveNewProducts } from "./selector";
+
+const newProductsSelector = createSelector(
+  retrieveNewProducts,
+  (newProducts) => ({
+    newProducts,
+  })
+);
 
 export default function NewDishes() {
+  const { newProducts } = useSelector(newProductsSelector);
+
+  console.log("newProducts:", newProducts);
+
   return (
     <div className={"new-products-frame"}>
       <Container>
@@ -35,12 +35,17 @@ export default function NewDishes() {
           <Stack className={"cards-frame"}>
             <CssVarsProvider>
               {newProducts.length !== 0 ? (
-                newProducts.map((ele, index) => {
+                newProducts.map((product: Product) => {
+                  const imagePath = `${serverApi}/${product.productImages[0]}`;
+                  const sizeType =
+                    product.productCollection === ProductCollection.CHIDREN
+                      ? product.productChildSize + "size"
+                      : product.productSize + "size";
                   return (
-                    <Card key={index} variant="outlined" className={"card"}>
+                    <Card key={product._id} variant="outlined" className={"card"}>
                       <CardOverflow>
                         <AspectRatio ratio="1">
-                          <img src={ele.imagePath} alt="" />
+                          <img src={imagePath} alt="" />
                         </AspectRatio>
                       </CardOverflow>
 
@@ -48,8 +53,7 @@ export default function NewDishes() {
                         <Stack className="info">
                           <Stack flexDirection={"row"}>
                             <Typography className={"title"}>
-                              {ele.step}
-                              {ele.desc}
+                              {/* {ele.desc} */}
                             </Typography>
                           </Stack>
                           <Stack></Stack>
@@ -59,7 +63,7 @@ export default function NewDishes() {
                   );
                 })
               ) : (
-                <Box className="no-data">New products are not availle!</Box>
+                <Box className="no-data">New products are not available!</Box>
               )}
             </CssVarsProvider>
           </Stack>
