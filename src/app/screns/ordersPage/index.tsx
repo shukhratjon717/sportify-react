@@ -32,7 +32,7 @@ export default function OrdersPage() {
                 >
                   {" "}
                   <Tab label="PAUSED ORDERS" value="1" />
-                  <Tab label="PROCESS ORDERS" value="2" />{" "}
+                  <Tab label="PROCESS ORDERS" value="2" />
                   <Tab label="FINISHED ORDERS" value="3" />
                 </Tabs>{" "}
               </Box>
@@ -40,7 +40,8 @@ export default function OrdersPage() {
             <Stack className={" order-main-content"}>
               {" "}
               <PausedOrders />
-              <ProcessOrders /> <FinishedOrders />
+              <ProcessOrders /> 
+              <FinishedOrders />
             </Stack>{" "}
           </TabContext>
         </Stack>
@@ -62,7 +63,7 @@ export default function OrdersPage() {
                   />{" "}
                 </div>
               </div>{" "}
-              <span className={"order-user-name"}>Martin</span>
+              <span className={"order-user-name"}>Steve</span>
               <span className={"order-user-prof"}>User</span>{" "}
             </Box>
             <Box className={"liner"}></Box>{" "}

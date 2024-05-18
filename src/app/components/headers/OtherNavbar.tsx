@@ -18,7 +18,9 @@ export function OtherNavbar() {
             </NavLink>
           </Box>
           <Stack className="links">
-            <div className={"other-navbar-title"}>Trendy Fashion</div>
+          <Stack>
+              <img className={"logo-icon"} src="/img/Sportify.png" />
+            </Stack>
             <Box className={"hover-line"}>
               <NavLink to="/">Home</NavLink>
             </Box>

@@ -25,7 +25,7 @@ export function Settings() {
             className={"spec-input mb-nick"}
             type="text"
             placeholder={"Martin"}
-            value={"Martin"}
+            value={"Steve"}
             name="memberNick"
           />
         </div>

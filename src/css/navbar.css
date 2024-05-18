@@ -17,6 +17,11 @@
   height: 50px;
 }
 
+.other-navbar .navbar-container .logo-icon {
+  width: 50px;
+  height: 50px;
+}
+
 .home-navbar .navbar-container .menu {
   height: 50px;
   display: flex;
