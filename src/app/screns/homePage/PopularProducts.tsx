@@ -9,77 +9,88 @@ import CardOverflow from "@mui/joy/CardOverflow";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DescriptionOutlinedIcon from "@mui/icons-material/OutboundOutlined";
 
-const list = [
-  { productName: "Jacket", imagePath: "/img/jacket3.png" },
-  { productName: "Woman Jacket", imagePath: "/img/jacket2.jpg" },
-  { productName: "New balance", imagePath: "/img/womanJ2.jpeg" },
-  { productName: "Nike", imagePath: "/img/womanJacket.webp" },
-];
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { retrievePopularProducts } from "./selector";
+import { Product } from "../../../lib/types/product";
+import { ProductCollection } from "../../../lib/enums/product.enum";
+import { serverApi } from "../../../lib/config";
 
-export default function PopularDishes() {
+const popularProductsRetriver = createSelector(
+  retrievePopularProducts,
+  (popularProducts) => ({ popularProducts })
+);
+
+export default function PopularProducts() {
+  const { popularProducts } = useSelector(popularProductsRetriver);
   return (
     <div className="popular-dishes-frame">
       <Container>
         <Stack className="popular-section">
           <Box className="category-title"> Popular Products</Box>
           <Stack className="cards-frame">
-            {list.map((ele, index) => {
-              return (
-                <CssVarsProvider key={index}>
-                  <Card className={"card"}>
-                    <CardCover>
-                      <img src={ele.imagePath} alt="" />
-                    </CardCover>
-                    <CardCover className="card-cover" />
-                    <CardContent sx={{ justifyContent: "flex-end" }}>
-                      <Stack
-                        flexDirection={"row"}
-                        justifyContent={"space-between"}
+            {popularProducts.length !== 0 ? (
+              popularProducts.map((ele: Product) => {
+                const imagePath = `${serverApi}/${ele.productImages[0]}`;
+                return (
+                  <CssVarsProvider key={ele._id}>
+                    <Card className={"card"}>
+                      <CardCover>
+                        <img src={imagePath} alt="" />
+                      </CardCover>
+                      <CardCover className="card-cover" />
+                      <CardContent sx={{ justifyContent: "flex-end" }}>
+                        <Stack
+                          flexDirection={"row"}
+                          justifyContent={"space-between"}
+                        >
+                          <Typography
+                            level="h2"
+                            fontSize="lg"
+                            textColor="#fff"
+                            mb={1}
+                          >
+                            {ele.productName}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontWeight: "md",
+                              color: "neutral.300",
+                              alignItems: "center",
+                              display: "flex",
+                            }}
+                          >
+                            {ele.productViews}
+                            <VisibilityIcon
+                              sx={{ fontSize: 25, marginLeft: "5px" }}
+                            />
+                          </Typography>
+                        </Stack>
+                      </CardContent>
+                      <CardOverflow
+                        sx={{
+                          display: "flex",
+                          gap: 1.5,
+                          py: 1.5,
+                          px: "var(--Card-padding)",
+                          borderTop: "1px solid",
+                          height: "60px",
+                        }}
                       >
                         <Typography
-                          level="h2"
-                          fontSize="lg"
-                          textColor="#fff"
-                          mb={1}
+                          startDecorator={<DescriptionOutlinedIcon />}
+                          textColor="neutral.300"
                         >
-                          {ele.productName}
+                          {ele.productDesc}
                         </Typography>
-                        <Typography
-                          sx={{
-                            fontWeight: "md",
-                            color: "neutral.300",
-                            alignItems: "center",
-                            display: "flex",
-                          }}
-                        >
-                          20
-                          <VisibilityIcon
-                            sx={{ fontSize: 25, marginLeft: "5px" }}
-                          />
-                        </Typography>
-                      </Stack>
-                    </CardContent>
-                    <CardOverflow
-                      sx={{
-                        display: "flex",
-                        gap: 1.5,
-                        py: 1.5,
-                        px: "var(--Card-padding)",
-                        borderTop: "1px solid",
-                        height: "60px",
-                      }}
-                    >
-                      <Typography
-                        startDecorator={<DescriptionOutlinedIcon />}
-                        textColor="neutral.300"
-                      >
-                        This is very comfortable
-                      </Typography>
-                    </CardOverflow>
-                  </Card>
-                </CssVarsProvider>
-              );
-            })}
+                      </CardOverflow>
+                    </Card>
+                  </CssVarsProvider>
+                );
+              })
+            ) : (
+              <Box className="no-data"> Popular Products are not available!</Box>
+            )}
           </Stack>
         </Stack>
       </Container>

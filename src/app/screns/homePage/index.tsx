@@ -9,12 +9,14 @@ import "../../../css/home.css";
 import { useEffect } from "react";
 import "../../../css/home.css";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 import { Product } from "../../../lib/types/product";
 import { setPopularProducts } from "./slice";
 import { retrievePopularProducts } from "./selector";
+import { ProductCollection } from "../../../lib/enums/product.enum";
+import ProductService from "../../services/ProductService";
 
 /** REDUX SLICE & SELECTOR */
 const actionDistatch = (dispatch: Dispatch) => ({
@@ -29,11 +31,22 @@ export default function HomePage() {
   // Selector: will store the data
 
   const { setPopularDishes } = actionDistatch(useDispatch());
-  const {popularProducts} = useSelector(popularProductsRetriver);
 
-  useEffect(() => {}, []);
-
-  console.log("PopularProducts:", popularProducts)
+  useEffect(() => {
+    // bacend server data fetchb => Data
+    const product = new ProductService();
+    product
+      .getProducts({
+        page: 1,
+        limit: 4,
+        order: "productViews",
+        productCollection: ProductCollection.UNISEX,
+      })
+      .then((data) => {
+        setPopularDishes(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className={"homepage"}>
