@@ -9,14 +9,14 @@ const initialState: HomePageState = {
 };
 // Argument
 const homePageSlice = createSlice({
-  name: "homePaage",
+  name: "homePage",
   initialState,
   reducers: {
     /**action */
     setPopularProducts: (state, action) => {
       state.popularProducts = action.payload;
     },
-    steNewProducts: (state, action) => {
+    setNewProducts: (state, action) => {
       state.popularProducts = action.payload;
     },
     setTopUsers: (state, action) => {
@@ -25,7 +25,7 @@ const homePageSlice = createSlice({
   },
 });
 
-export const { setPopularProducts, steNewProducts, setTopUsers } =
+export const { setPopularProducts, setNewProducts, setTopUsers } =
   homePageSlice.actions;
 
 const HomePageReducer = homePageSlice.reducer;
