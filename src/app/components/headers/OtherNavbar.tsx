@@ -4,6 +4,7 @@ import Basket from "./Basket";
 
 export function OtherNavbar() {
   const authMember = true;
+
   return (
     <div className="other-navbar">
       <div className="other-navbar-header">
