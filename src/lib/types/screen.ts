@@ -3,7 +3,7 @@ import { User } from "./user";
 
 export interface AppRootState {
     homePage: HomePageState;
-    // productsPage: ProductsPage
+    productsPage: ProductsPageState
   }
   
   /**HOMEPAGE */
@@ -13,6 +13,11 @@ export interface AppRootState {
     topUsers: User[];
   }
   
-  /**PRODUCTS PAGE */
+/**PRODUCTS PAGE */
+export interface ProductsPageState {
+  shop: User | null;
+  chosenProduct: Product| null;
+  products: Product[];
+}
   
   /**ORDERS PAGE */
