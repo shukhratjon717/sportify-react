@@ -17,7 +17,7 @@ const homePageSlice = createSlice({
       state.popularProducts = action.payload;
     },
     setNewProducts: (state, action) => {
-      state.popularProducts = action.payload;
+      state.newProducts = action.payload;
     },
     setTopUsers: (state, action) => {
       state.topUsers = action.payload;

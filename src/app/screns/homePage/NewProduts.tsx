@@ -15,15 +15,15 @@ import { serverApi } from "../../../lib/config";
 import { ProductCollection } from "../../../lib/enums/product.enum";
 import { retrieveNewProducts } from "./selector";
 
-const newProductsSelector = createSelector(
+const newProductsRetriever = createSelector(
   retrieveNewProducts,
   (newProducts) => ({
     newProducts,
   })
 );
 
-export default function NewDishes() {
-  const { newProducts } = useSelector(newProductsSelector);
+export default function NewProducts() {
+  const { newProducts } = useSelector(newProductsRetriever);
 
   console.log("newProducts:", newProducts);
 

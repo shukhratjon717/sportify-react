@@ -1,13 +1,13 @@
 import React from "react";
-import { Box, Container, Stack } from "@mui/material"; //
-import Card from "@mui/joy/Card"; //
-import CardCover from "@mui/joy/CardCover"; //
-import CardContent from "@mui/joy/CardContent"; //
-import Typography from "@mui/joy/Typography"; //
-import { CssVarsProvider } from "@mui/joy/styles"; //
+import { Box, Container, Stack } from "@mui/material";
+import Card from "@mui/joy/Card";
+import CardCover from "@mui/joy/CardCover";
+import CardContent from "@mui/joy/CardContent";
+import Typography from "@mui/joy/Typography";
+import { CssVarsProvider } from "@mui/joy/styles";
 import CardOverflow from "@mui/joy/CardOverflow";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import DescriptionOutlinedIcon from "@mui/icons-material/OutboundOutlined";
+import DescriptionOutLinedIcon from "@mui/icons-material/OutboundOutlined";
 
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -16,13 +16,13 @@ import { Product } from "../../../lib/types/product";
 import { ProductCollection } from "../../../lib/enums/product.enum";
 import { serverApi } from "../../../lib/config";
 
-const popularProductsRetriver = createSelector(
+const popularProductsRetriever = createSelector(
   retrievePopularProducts,
   (popularProducts) => ({ popularProducts })
 );
 
 export default function PopularProducts() {
-  const { popularProducts } = useSelector(popularProductsRetriver);
+  const { popularProducts } = useSelector(popularProductsRetriever);
   return (
     <div className="popular-dishes-frame">
       <Container>
@@ -38,14 +38,14 @@ export default function PopularProducts() {
                       <CardCover>
                         <img src={imagePath} alt="" />
                       </CardCover>
-                      <CardCover className="card-cover" />
+                      <CardCover className={"card-cover"} />
                       <CardContent sx={{ justifyContent: "flex-end" }}>
                         <Stack
                           flexDirection={"row"}
                           justifyContent={"space-between"}
                         >
                           <Typography
-                            level="h2"
+                            level="title-lg"
                             fontSize="lg"
                             textColor="#fff"
                             mb={1}
@@ -78,7 +78,7 @@ export default function PopularProducts() {
                         }}
                       >
                         <Typography
-                          startDecorator={<DescriptionOutlinedIcon />}
+                          startDecorator={<DescriptionOutLinedIcon />}
                           textColor="neutral.300"
                         >
                           {ele.productDesc}
@@ -89,7 +89,7 @@ export default function PopularProducts() {
                 );
               })
             ) : (
-              <Box className="no-data"> Popular Products are not available!</Box>
+              <Box className="no-data">Popular Products are not available!</Box>
             )}
           </Stack>
         </Stack>
