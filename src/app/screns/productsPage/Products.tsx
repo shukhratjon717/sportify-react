@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Container, Icon, Stack } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
@@ -8,30 +8,52 @@ import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useDispatch, useSelector } from "react-redux";
+import ProductService from "../../services/ProductService";
+import { ProductCollection } from "../../../lib/enums/product.enum";
+import { Product } from "../../../lib/types/product";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setProducts } from "./slice";
+import { retrieveProducts } from "./selector";
+import { createSelector } from "@reduxjs/toolkit";
+import { serverApi } from "../../../lib/config";
 
-const products = [
-  { productName: "Jacket", imagePath: "/img/jacket3.png" },
-  { productName: "man Jacket", imagePath: "/img/jacket2.jpg" },
-  { productName: "New balance", imagePath: "/img/womanJ2.jpeg" },
-  { productName: "Nike", imagePath: "/img/womanJacket.webp" },
-  { productName: "Jacket", imagePath: "/img/jacket3.png" },
-  { productName: "man Jacket", imagePath: "/img/jacket2.jpg" },
-  { productName: "New balance", imagePath: "/img/womanJ2.jpeg" },
-  { productName: "Nike", imagePath: "/img/womanJacket.webp" },
-];
+/** REDUX SLICE & SELECTOR */
+const actionDispatch = (dispatch: Dispatch) => ({
+  setProducts: (data: Product[]) => dispatch(setProducts(data)),
+});
+/** REDUX SLICE & SELECTOR **/
+const productsRetriever = createSelector(retrieveProducts, (products) => ({
+  products,
+}));
 
-const brandProducts = [
-  { productName: "man Jacket", imagePath: "/img/jacket2.jpg" },
-  { productName: "man Jacket", imagePath: "/img/jacket2.jpg" },
-];
+// const brandProducts = [
+//   { productName: "man Jacket", imagePath: "/img/jacket2.jpg" },
+//   { productName: "man Jacket", imagePath: "/img/jacket2.jpg" },
+// ];
 export default function Products() {
+  const { setProducts } = actionDispatch(useDispatch());
+  const { products } = useSelector(productsRetriever);
+  useEffect(() => {
+    const productService = new ProductService();
+    productService
+      .getProducts({
+        page: 1,
+        limit: 8,
+        order: "createdAt",
+        productCollection: ProductCollection.SET,
+        search: "",
+      })
+      .then((data) => setProducts(data))
+      .catch((err) => console.log("Error on ProductsPage:", err));
+  });
   return (
     <div className={"products"}>
       <Container>
         <Stack
           flexDirection={"column"}
           alignItems={"center"}
-            className={"products-frame"}
+          className={"products-frame"}
         >
           <Stack className={"upper-frame"}>
             <Box className={"title"}> Sportify Products</Box>
@@ -126,12 +148,13 @@ export default function Products() {
             <Stack className={"product-wrapper"}>
               {products.length !== 0 ? (
                 products.map((product, index) => {
+                  const imagePath = `${serverApi}/${product.productImages[0]}`;
                   return (
                     <Stack key={index} className={"product-card"}>
                       <Stack
                         className={"product-img"}
                         sx={{
-                          backgroundImage: `url(${product.imagePath})`,
+                          backgroundImage: `url(${imagePath})`,
                           backgroundSize: "cover",
                           backgroundRepeat: "no-repeat",
                           backgroundPosition: "center",
@@ -149,10 +172,16 @@ export default function Products() {
                               className={"view-btn"}
                               sx={{ right: " 36px" }}
                             >
-                              <Badge badgeContent={20} color="secondary">
+                              <Badge
+                                badgeContent={product.productViews}
+                                color="secondary"
+                              >
                                 <RemoveRedEyeIcon
                                   sx={{
-                                    color: 20 ? "gray" : "white",
+                                    color:
+                                      product.productViews === 0
+                                        ? "gray"
+                                        : "white",
                                   }}
                                 />
                               </Badge>
@@ -166,7 +195,7 @@ export default function Products() {
                         </span>
                         <div className={"product1-desc"}>
                           <MonetizationOnIcon />
-                          {12}
+                          {product.productPrice}
                         </div>
                       </Box>
                     </Stack>
@@ -204,7 +233,7 @@ export default function Products() {
                 <div className={"brands-title"}>
                   Check out our latest trends
                 </div>
-                m{"\n"}
+                {"\n"}
                 <div className={"brand-paragraph"}>
                   Explore the latest fashion trends and styles with our diverse
                   collection. From casual to formal wear, we have something for
@@ -213,14 +242,15 @@ export default function Products() {
                   all day long. Start shopping now!
                 </div>
               </Stack>
-              {brandProducts.length !== 0 ? (
-                brandProducts.map((product, index) => {
+              {products.length !== 0 ? (
+                products.map((product, index) => {
+                  const imagePath = `${serverApi}/${product.productImages[0]}`;
                   return (
                     <Stack key={index} className={"brand-card"}>
                       <Stack
                         className={"brands-img"}
                         sx={{
-                          backgroundImage: `url(${product.imagePath})`,
+                          backgroundImage: `url(${imagePath})`,
                           backgroundSize: "cover",
                           backgroundRepeat: "no-repeat",
                           backgroundPosition: "center",
@@ -233,7 +263,7 @@ export default function Products() {
                         <div className={"brand-money-holder"}>
                           <div className={"brand-money"}>
                             <MonetizationOnIcon />
-                            {12}
+                            {product.productPrice}
                           </div>
                         </div>
                       </Box>
