@@ -6,13 +6,14 @@ const initialState: ProductsPageState = {
   shop: null,
   chosenProduct: null,
   products: [],
+  brandProducts: [],
 };
 
 const productsPageSlice = createSlice({
   name: "productsPage",
   initialState,
   reducers: {
-    setRestaurant: (state, action) => {
+    setshop: (state, action) => {
       state.shop = action.payload;
     },
     setChosenProduct: (state, action) => {
@@ -21,11 +22,14 @@ const productsPageSlice = createSlice({
     setProducts: (state, action) => {
       state.products = action.payload;
     },
+    setBrandProducts: (state, action) => {
+      state.products = action.payload;
+    },
   },
 });
 
-export const { setRestaurant, setChosenProduct, setProducts } =
+export const { setshop, setChosenProduct, setProducts, setBrandProducts } =
   productsPageSlice.actions;
 
-  const ProductPageReducer = productsPageSlice.reducer;
-  export default ProductPageReducer;
+const ProductPageReducer = productsPageSlice.reducer;
+export default ProductPageReducer;

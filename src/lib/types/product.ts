@@ -5,6 +5,7 @@ import {
   ProductType,
   ProductChildSize,
   ProductShoesSize,
+  ProductGender,
 } from "../enums/product.enum";
 
 export interface Product {
@@ -15,9 +16,9 @@ export interface Product {
   productPrice: number;
   productLeftCount: number;
   productSize: ProductSize;
-  productShoesSize: ProductShoesSize;
-  productChildSize: ProductChildSize;
-  productType: string;
+  productShoesSize?: ProductShoesSize;
+  productChildSize?: ProductChildSize;
+  productType: ProductType;
   productDesc?: string;
   productImages: string[];
   productViews: number;
@@ -28,6 +29,7 @@ export interface ProductInquiry {
   page: number;
   limit: number;
   productCollection?: ProductCollection;
+  productType?: ProductType;
+  productGender?: ProductGender;
   search?: string;
 }
-

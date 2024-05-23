@@ -52,8 +52,9 @@ export default function NewProducts() {
                       <CardOverflow variant="soft" className="product-detail">
                         <Stack className="info">
                           <Stack flexDirection={"row"}>
-                            <Typography className={"title"}>
-                              {/* {ele.desc} */}
+                            <Typography className={"title"} >
+                              {"Lastest Products"}
+                              
                             </Typography>
                           </Stack>
                           <Stack></Stack>

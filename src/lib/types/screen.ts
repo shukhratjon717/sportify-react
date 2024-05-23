@@ -18,6 +18,7 @@ export interface ProductsPageState {
   shop: User | null;
   chosenProduct: Product| null;
   products: Product[];
+  brandProducts: Product[];
 }
   
   /**ORDERS PAGE */

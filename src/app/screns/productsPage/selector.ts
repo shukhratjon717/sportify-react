@@ -15,3 +15,8 @@ export const retrieveProducts = createSelector(
   selectProductsPage,
   (ProductsPage) => ProductsPage.products
 );
+
+export const retrieveBrandProducts = createSelector(
+  selectProductsPage,
+  (ProductsPage) => ProductsPage.brandProducts
+);
