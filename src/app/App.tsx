@@ -27,7 +27,7 @@ function App() {
   /** Handlers **/
 
   const handleSignupClose = () => setSignupOpen(false);
-  const handleLoginClose = () => setSignupOpen(false);
+  const handleLoginClose = () => setLoginOpen(false);
   return (
     <>
       {location.pathname === "/" ? (
@@ -37,6 +37,8 @@ function App() {
           onRemove={onRemove}
           onDelete={onDelete}
           onDeleteAll={onDeleteAll}
+          setSignupOpen={setSignupOpen}
+          setLoginOpen={setLoginOpen}
         />
       ) : (
         <OtherNavbar
@@ -45,6 +47,8 @@ function App() {
           onRemove={onRemove}
           onDelete={onDelete}
           onDeleteAll={onDeleteAll}
+          setSignupOpen={setSignupOpen}
+          setLoginOpen={setLoginOpen}
         />
       )}
       <Switch>

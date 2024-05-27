@@ -6,6 +6,11 @@ import Fade from "@material-ui/core/Fade";
 import { Fab, Stack, TextField } from "@mui/material";
 import styled from "styled-components";
 import LoginIcon from "@mui/icons-material/Login";
+import MemberService from "../../services/MemberService";
+import { Messages } from "../../../lib/config";
+import { sweetErrorHandling } from "../../../lib/sweetAlerts";
+import { T } from "../../../lib/types/common";
+import { UserInput } from "../../../lib/types/user";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -40,8 +45,52 @@ interface AuthenticationModalProps {
 export default function AuthenticationModal(props: AuthenticationModalProps) {
   const { signupOpen, loginOpen, handleSignupClose, handleLoginClose } = props;
   const classes = useStyles();
+  const [userNick, setUserNick] = useState<string>("");
+  const [userPhone, setUserPhone] = useState<string>("");
+  const [userPassword, setUserPassword] = useState<string>("");
 
   /** HANDLERS **/
+
+  const handleUserName = (e: T) => {
+    console.log(e.target.value);
+    setUserNick(e.target.value);
+  };
+  const handlePhone = (e: T) => {
+    setUserPhone(e.target.value);
+  };
+  const handlePassword = (e: T) => {
+    setUserPassword(e.target.value);
+  };
+
+  const handlePasswordKeyDown = (e: T) => {
+    if (e.key === "Enter" && signupOpen) {
+      handleSignupRequest().then();
+    }
+  };
+
+  const handleSignupRequest = async () => {
+    try {
+      console.log("inputs: ", userNick, userPhone, userPassword);
+      const isFulfill =
+        userNick !== "" && userPhone !== "" && userPassword !== "";
+      if (!isFulfill) throw new Error(Messages.error3);
+
+      const signupInput: UserInput = {
+        userNick: userNick,
+        userPhone: userPhone,
+        userPassword: userPassword,
+      };
+
+      const member = new MemberService();
+      const result = await member.signup(signupInput);
+
+      handleSignupClose();
+    } catch (err) {
+      console.log(err);
+      handleSignupClose();
+      sweetErrorHandling(err).then();
+    }
+  };
 
   return (
     <div>
@@ -71,22 +120,27 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 id="outlined-basic"
                 label="username"
                 variant="outlined"
+                onChange={handleUserName}
               />
               <TextField
                 sx={{ my: "17px" }}
                 id="outlined-basic"
                 label="phone number"
                 variant="outlined"
+                onChange={handlePhone}
               />
               <TextField
                 id="outlined-basic"
                 label="password"
                 variant="outlined"
+                onChange={handlePassword}
+                onKeyDown={handlePasswordKeyDown}
               />
               <Fab
                 sx={{ marginTop: "30px", width: "120px" }}
                 variant="extended"
                 color="primary"
+                onClick={handleSignupRequest}
               >
                 <LoginIcon sx={{ mr: 1 }} />
                 Signup
