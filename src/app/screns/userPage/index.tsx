@@ -6,7 +6,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import "../../../css/userPage.css";
 import { Settings } from "./Settings";
 
-export default function UserPage() {
+export default function UsersPage() {
   return (
     <div className={"user-page"}>
       <Container>

@@ -21,6 +21,7 @@ import ProductService from "../../services/ProductService";
 import MemberService from "../../services/MemberService";
 import { serverApi } from "../../../lib/config";
 import { User } from "../../../lib/types/user";
+import { CartItem } from "../../../lib/types/search";
 
 const actionDistatch = (dispatch: Dispatch) => ({
   setShop: (data: User) => dispatch(setShop(data)),
@@ -36,7 +37,12 @@ const shopRetriever = createSelector(retrieveShop, (shop) => ({
   shop,
 }));
 
-export default function ChosenProduct() {
+interface chosenProductProps {
+  onAdd: (item: CartItem) => void;
+}
+
+export default function ChosenProduct(props: chosenProductProps) {
+  const { onAdd } = props;
   const { productId } = useParams<{ productId: string }>();
   const { setShop, setChosenProduct } = actionDistatch(useDispatch());
   const { chosenProduct } = useSelector(setChosenProductRetriever);
