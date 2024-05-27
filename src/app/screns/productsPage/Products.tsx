@@ -42,8 +42,6 @@ export default function Products(props: ProductsProps) {
     page: 1,
     limit: 8,
     order: "createdAt",
-    productType: ProductType.JACKETS,
-    productGender: ProductGender.MAN,
     search: "",
   });
   const [searchText, setSearchText] = useState<string>("");
