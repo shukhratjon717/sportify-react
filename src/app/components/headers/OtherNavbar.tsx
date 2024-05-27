@@ -13,7 +13,7 @@ interface OtherNavbarProps {
 
 export default function OtherNavbar(props: OtherNavbarProps) {
   const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = props;
-  const authMember = true;
+  const authMember = null;
 
   return (
     <div className="other-navbar">
