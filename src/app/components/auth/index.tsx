@@ -10,7 +10,8 @@ import MemberService from "../../services/MemberService";
 import { Messages } from "../../../lib/config";
 import { sweetErrorHandling } from "../../../lib/sweetAlerts";
 import { T } from "../../../lib/types/common";
-import { UserInput } from "../../../lib/types/user";
+import { LoginInput, UserInput } from "../../../lib/types/user";
+import { useGlobals } from "../../hooks/useGlobals";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -48,6 +49,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
   const [userNick, setUserNick] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
+  const { setAuthMember } = useGlobals();
 
   /** HANDLERS **/
 
@@ -65,6 +67,8 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
   const handlePasswordKeyDown = (e: T) => {
     if (e.key === "Enter" && signupOpen) {
       handleSignupRequest().then();
+    } else if (e.key === "Enter" && loginOpen) {
+      handleLoginRequest().then();
     }
   };
 
@@ -84,10 +88,33 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
       const member = new MemberService();
       const result = await member.signup(signupInput);
 
+      setAuthMember(result);
       handleSignupClose();
     } catch (err) {
       console.log(err);
       handleSignupClose();
+      sweetErrorHandling(err).then();
+    }
+  };
+
+  const handleLoginRequest = async () => {
+    try {
+      const isFulfill = userNick !== "" && userPassword !== "";
+      if (!isFulfill) throw new Error(Messages.error3);
+
+      const loginInput: LoginInput = {
+        userNick: userNick,
+        userPassword: userPassword,
+      };
+
+      const member = new MemberService();
+      const result = await member.login(loginInput);
+
+      setAuthMember(result);
+      handleLoginClose();
+    } catch (err) {
+      console.log(err);
+      handleLoginClose();
       sweetErrorHandling(err).then();
     }
   };

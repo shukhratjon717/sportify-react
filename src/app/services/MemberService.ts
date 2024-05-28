@@ -1,7 +1,7 @@
 import axios from "axios";
 import { serverApi } from "../../lib/config";
 import { Product, ProductInquiry } from "../../lib/types/product";
-import { User, UserInput } from "../../lib/types/user";
+import { LoginInput, User, UserInput } from "../../lib/types/user";
 
 class MemberService {
   private readonly path: string;
@@ -49,6 +49,37 @@ class MemberService {
       return user;
     } catch (err) {
       console.log("Error, signup:");
+      throw err;
+    }
+  }
+
+  public async login(input: LoginInput): Promise<User> {
+    try {
+      const url = this.path + "/member/login";
+      const result = await axios.post(url, input, { withCredentials: true });
+      console.log("login", result);
+
+      const user: User = result.data.user;
+      console.log("user:", user);
+      localStorage.setItem("memberData", JSON.stringify(user));
+
+      return user;
+    } catch (err) {
+      console.log("Error, login:", err);
+      throw err;
+    }
+  }
+  public async logout(): Promise<boolean> {
+    try {
+      const url = this.path + "/user/logout";
+      const result = await axios.post(url, {}, { withCredentials: true });
+      console.log("logout", result);
+
+      localStorage.removeItem("userData");
+
+      return result.data.logout;
+    } catch (err) {
+      console.log("Error, logout:", err);
       throw err;
     }
   }
