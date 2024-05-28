@@ -1,12 +1,7 @@
-import {
-  configureStore,
-  ThunkAction,
-  Action,
-  getDefaultMiddleware,
-} from "@reduxjs/toolkit";
-import reduxLogger from "redux-logger";
+import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import HomePageReducer from "./screns/homePage/slice";
 import ProductPageReducer from "./screns/productsPage/slice";
+import OrdersPageReducer from "./screns/ordersPage/slice";
 
 export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
@@ -15,6 +10,7 @@ export const store = configureStore({
   reducer: {
     homePage: HomePageReducer,
     productsPage: ProductPageReducer,
+    ordersPage: OrdersPageReducer,
   },
 });
 
