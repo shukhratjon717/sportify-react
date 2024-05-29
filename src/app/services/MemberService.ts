@@ -1,7 +1,7 @@
 import axios from "axios";
 import { serverApi } from "../../lib/config";
 import { Product, ProductInquiry } from "../../lib/types/product";
-import { LoginInput, User, UserInput } from "../../lib/types/user";
+import { LoginInput, User, UserInput, UserUpdateInput } from "../../lib/types/user";
 
 class MemberService {
   private readonly path: string;
@@ -80,6 +80,34 @@ class MemberService {
       return result.data.logout;
     } catch (err) {
       console.log("Error, logout:", err);
+      throw err;
+    }
+  }
+  public async updateMember(input: UserUpdateInput): Promise<User> {
+    try {
+      const formData = new FormData();
+      formData.append("userNick", input.userNick || "");
+      formData.append("userPhone", input.userPhone || "");
+      formData.append("userAddress", input.userAddress || "");
+      formData.append("userDesc", input.userDesc || "");
+      formData.append("userImage", input.userImage || "");
+
+      const result = await axios(`${serverApi}/member/update`, {
+        method: "POST",
+        data: formData,
+        withCredentials: true,
+        headers: {
+          "Contet-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("updateMember", result);
+
+      const member: User = result.data;
+      localStorage.setItem("userData", JSON.stringify(member));
+      return member;
+    } catch (err) {
+      console.log("Error, updateMember:", err);
       throw err;
     }
   }

@@ -35,8 +35,6 @@ export interface LoginInput {
 }
 
 export interface UserUpdateInput {
-  _id: string;
-  userStatus?: UserStatus;
   userNick?: string;
   userPhone?: string;
   userPassword?: string;
@@ -44,5 +42,3 @@ export interface UserUpdateInput {
   userDesc?: string;
   userImage?: string;
 }
-
-

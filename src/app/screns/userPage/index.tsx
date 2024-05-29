@@ -5,8 +5,16 @@ import TelegramIcon from "@mui/icons-material/Telegram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import "../../../css/userPage.css";
 import { Settings } from "./Settings";
+import { useGlobals } from "../../hooks/useGlobals";
+import { useHistory } from "react-router-dom";
+import { serverApi } from "../../../lib/config";
+import { UserType } from "../../../lib/enums/user.enum";
 
 export default function UsersPage() {
+  const history = useHistory();
+  const { authMember } = useGlobals();
+
+  if (!authMember) history.push("/");
   return (
     <div className={"user-page"}>
       <Container>
@@ -29,16 +37,37 @@ export default function UsersPage() {
               >
                 <div className={"order-user-img"}>
                   <img
-                    src={"/icons/default-user.svg"}
+                    src={
+                      authMember?.userImage
+                        ? `${serverApi}/${authMember.userImage}`
+                        : "/icons/default-user.svg"
+                    }
                     className={"order-user-avatar"}
                   />
                   <div className={"order-user-icon-box"}>
-                    <img src={"/icons/user-badge.svg"} />
+                    <img
+                      src={
+                        authMember?.userType === UserType.SHOP
+                          ? "/img/soprtifyShop.png"
+                          : "/icons/user-badge.svg"
+                      }
+                    />
                   </div>
                 </div>
-                <span className={"order-user-name"}>Martin</span>
-                <span className={"order-user-prof"}>User</span>
-                <span className={"order-user-prof"}>No address</span>
+                <span className={"order-user-name"}>
+                  {" "}
+                  {authMember?.userNick}{" "}
+                </span>
+                <span className={"order-user-prof"}>
+                  {" "}
+                  {authMember?.userType}{" "}
+                </span>
+                <span className={"order-user-prof"}>
+                  {" "}
+                  {authMember?.userAddress
+                    ? authMember.userAddress
+                    : "Do not exist"}
+                </span>
               </Box>
               <Box className={"user-media-box"}>
                 <FacebookIcon />
@@ -46,7 +75,9 @@ export default function UsersPage() {
                 <TelegramIcon />
                 <YouTubeIcon />
               </Box>
-              <p className={"user-desc"}>No description</p>
+              <p className={"user-desc"}>
+                {authMember?.userDesc ? authMember.userDesc : "No Description"}
+              </p>
             </Box>
           </Stack>
         </Stack>
