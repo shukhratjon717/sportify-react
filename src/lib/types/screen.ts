@@ -12,7 +12,6 @@ export interface AppRootState {
 export interface HomePageState {
   popularProducts: Product[];
   newProducts: Product[];
-  topUsers: User[];
 }
 
 /**PRODUCTS PAGE */

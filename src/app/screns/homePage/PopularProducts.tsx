@@ -23,6 +23,7 @@ const popularProductsRetriever = createSelector(
 
 export default function PopularProducts() {
   const { popularProducts } = useSelector(popularProductsRetriever);
+
   return (
     <div className="popular-dishes-frame">
       <Container>
@@ -30,10 +31,10 @@ export default function PopularProducts() {
           <Box className="category-title"> Popular Products</Box>
           <Stack className="cards-frame">
             {popularProducts.length !== 0 ? (
-              popularProducts.map((ele: Product) => {
-                const imagePath = `${serverApi}/${ele.productImages[0]}`;
+              popularProducts.map((product: Product) => {
+                const imagePath = `${serverApi}/${product.productImages[0]}`;
                 return (
-                  <CssVarsProvider key={ele._id}>
+                  <CssVarsProvider key={product._id}>
                     <Card className={"card"}>
                       <CardCover>
                         <img src={imagePath} alt="" />
@@ -50,7 +51,7 @@ export default function PopularProducts() {
                             textColor="#fff"
                             mb={1}
                           >
-                            {ele.productName}
+                            {product.productName}
                           </Typography>
                           <Typography
                             sx={{
@@ -60,7 +61,7 @@ export default function PopularProducts() {
                               display: "flex",
                             }}
                           >
-                            {ele.productViews}
+                            {product.productViews}
                             <VisibilityIcon
                               sx={{ fontSize: 25, marginLeft: "5px" }}
                             />
@@ -81,7 +82,7 @@ export default function PopularProducts() {
                           startDecorator={<DescriptionOutLinedIcon />}
                           textColor="neutral.300"
                         >
-                          {ele.productDesc}
+                          {product.productDesc}
                         </Typography>
                       </CardOverflow>
                     </Card>

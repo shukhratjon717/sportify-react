@@ -5,7 +5,6 @@ import { HomePageState } from "../../../lib/types/screen";
 const initialState: HomePageState = {
   popularProducts: [],
   newProducts: [],
-  topUsers: [],
 };
 // Argument
 const homePageSlice = createSlice({
@@ -19,14 +18,10 @@ const homePageSlice = createSlice({
     setNewProducts: (state, action) => {
       state.newProducts = action.payload;
     },
-    setTopUsers: (state, action) => {
-      state.topUsers = action.payload;
-    },
   },
 });
 
-export const { setPopularProducts, setNewProducts, setTopUsers } =
-  homePageSlice.actions;
+export const { setPopularProducts, setNewProducts } = homePageSlice.actions;
 
 const HomePageReducer = homePageSlice.reducer;
 export default HomePageReducer;

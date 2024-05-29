@@ -42,7 +42,11 @@ export default function NewProducts() {
                       ? product.productChildSize + "size"
                       : product.productSize + "size";
                   return (
-                    <Card key={product._id} variant="outlined" className={"card"}>
+                    <Card
+                      key={product._id}
+                      variant="outlined"
+                      className={"card"}
+                    >
                       <CardOverflow>
                         <AspectRatio ratio="1">
                           <img src={imagePath} alt="" />
@@ -52,9 +56,8 @@ export default function NewProducts() {
                       <CardOverflow variant="soft" className="product-detail">
                         <Stack className="info">
                           <Stack flexDirection={"row"}>
-                            <Typography className={"title"} >
+                            <Typography className={"title"}>
                               {"Lastest Products"}
-                              
                             </Typography>
                           </Stack>
                           <Stack></Stack>
