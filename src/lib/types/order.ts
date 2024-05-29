@@ -4,7 +4,7 @@ import { Product } from "./product";
 export interface OrderItemInput {
   itemQuantity: number;
   itemPrice: number;
-  poductId: string;
+  productId: string;
   orderId?: string;
 }
 
@@ -29,13 +29,6 @@ export interface Order {
   /** from aggregations*/
   orderItems: OrderItem[];
   productData: Product[];
-}
-
-export interface OrderItemInput {
-  itemQuantity: number;
-  itemPrice: number;
-  poductId: string;
-  orderId?: string;
 }
 
 export interface OrderInquiry {

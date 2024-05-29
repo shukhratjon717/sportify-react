@@ -90,7 +90,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
           ) : null}
           {authMember ? (
             <Box className={"hover-line"}>
-              <NavLink to="/member-page" activeClassName={"underline"}>
+              <NavLink to="/user-page" activeClassName={"underline"}>
                 My Page
               </NavLink>
             </Box>
@@ -107,16 +107,24 @@ export default function HomeNavbar(props: HomeNavbarProps) {
           />
           {!authMember ? (
             <Box className={"login-holder"}>
+             <Box className={"signup"}>
+              {!authMember ? (
+                <Button
+                  variant={"contained"}
+                  className={"signup-button"}
+                  onClick={() => setSignupOpen(true)}
+                >
+                  SIGN UP
+                </Button>
+              ) : null}
+            </Box>
               <Button
                 variant="contained"
                 className="login-button"
-                onClick={() => setSignupOpen(true)}
+                onClick={() => setLoginOpen(true)}
               >
-                Get Started
+                Login
               </Button>
-              {/* <Button variant="contained" className="login-button">
-      Login
-    </Button> */}
             </Box>
           ) : (
             <img

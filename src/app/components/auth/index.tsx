@@ -85,10 +85,10 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
         userPassword: userPassword,
       };
 
-      const member = new MemberService();
-      const result = await member.signup(signupInput);
-
+      const user = new MemberService();
+      const result = await user.signup(signupInput);
       setAuthMember(result);
+
       handleSignupClose();
     } catch (err) {
       console.log(err);
@@ -107,8 +107,8 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
         userPassword: userPassword,
       };
 
-      const member = new MemberService();
-      const result = await member.login(loginInput);
+      const user = new MemberService();
+      const result = await user.login(loginInput);
 
       setAuthMember(result);
       handleLoginClose();
@@ -209,12 +209,15 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 label="username"
                 variant="outlined"
                 sx={{ my: "10px" }}
+                onChange={handleUserName}
               />
               <TextField
                 id={"outlined-basic"}
                 label={"password"}
                 variant={"outlined"}
                 type={"password"}
+                onChange={handlePassword}
+                onKeyDown={handlePasswordKeyDown}
               />
               <Fab
                 sx={{ marginTop: "27px", width: "120px" }}
