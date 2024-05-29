@@ -53,7 +53,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
   /** HANDLERS **/
 
-  const handleUserName = (e: T) => {
+  const handleUsername = (e: T) => {
     console.log(e.target.value);
     setUserNick(e.target.value);
   };
@@ -84,11 +84,11 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
         userPhone: userPhone,
         userPassword: userPassword,
       };
-
+      console.log("userSignup:", signupInput)
       const user = new MemberService();
       const result = await user.signup(signupInput);
-      setAuthMember(result);
 
+      setAuthMember(result);
       handleSignupClose();
     } catch (err) {
       console.log(err);
@@ -147,7 +147,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 id="outlined-basic"
                 label="username"
                 variant="outlined"
-                onChange={handleUserName}
+                onChange={handleUsername}
               />
               <TextField
                 sx={{ my: "17px" }}
@@ -209,7 +209,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 label="username"
                 variant="outlined"
                 sx={{ my: "10px" }}
-                onChange={handleUserName}
+                onChange={handleUsername}
               />
               <TextField
                 id={"outlined-basic"}

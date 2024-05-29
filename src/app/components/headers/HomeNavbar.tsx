@@ -45,23 +45,10 @@ export default function HomeNavbar(props: HomeNavbarProps) {
   } = props;
   const { authMember } = useGlobals();
 
-  const [count, setCount] = useState<number>(0);
-  const [value, setValue] = useState<boolean>(true);
-
-  useEffect(() => {
-    console.log("componentDidMount", count); // DATA FETCH
-    setCount(count + 1);
-
-    return () => {
-      console.log("componentWillUnmount");
-    };
-  }, [value]);
-
   /** HANDLERS */
 
-  const buttonHandler = () => {
-    setValue(!value);
-  };
+
+  
   return (
     <div className="home-navbar">
       <Container className="navbar-container">

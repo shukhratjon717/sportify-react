@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 import { Product } from "../../../lib/types/product";
-import { setNewProducts, setPopularProducts } from "./slice";
+import { setNewProducts, setPopularProducts, setTopUsers } from "./slice";
 import { retrievePopularProducts } from "./selector";
 import {
   ProductCollection,
@@ -19,11 +19,14 @@ import {
 import ProductService from "../../services/ProductService";
 import "../../../css/home.css";
 import { User } from "../../../lib/types/user";
+import ActiveUsers from "./ActiveUsers";
 
 /** REDUX SLICE & SELECTOR */
 const actionDistatch = (dispatch: Dispatch) => ({
   setPopularProducts: (data: Product[]) => dispatch(setPopularProducts(data)),
   setNewProducts: (data: Product[]) => dispatch(setNewProducts(data)),
+  setTopUsers: (data: User[]) => dispatch(setTopUsers(data)),
+
 });
 const popularProductsRetriver = createSelector(
   retrievePopularProducts,
@@ -62,8 +65,11 @@ export default function HomePage() {
       <Statistics />
       <PopularProducts />
       <NewProducts />
+      <ActiveUsers />
       <Advertisement />
       <Events />
     </div>
   );
 }
+
+

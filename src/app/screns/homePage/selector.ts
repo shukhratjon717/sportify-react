@@ -11,5 +11,9 @@ export const retrieveNewProducts = createSelector(
   selectHomePage,
   (HomePage) => HomePage.newProducts
 );
+export const retrieveTopUsers = createSelector(
+  selectHomePage,
+  (HomePage) => HomePage.topUsers
+);
 
 
