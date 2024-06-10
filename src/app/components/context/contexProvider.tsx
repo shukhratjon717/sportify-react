@@ -1,19 +1,24 @@
-import { ReactNode, useState } from "react";
+import React, { ReactNode, useState, useEffect } from "react";
 import Cookies from "universal-cookie";
 import { User } from "../../../lib/types/user";
 import { GlobalContext } from "../../hooks/useGlobals";
 
 const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const cookies = new Cookies();
-  if (!cookies.get("accessToken")) localStorage.removeItem("userData");
 
-  const [authMember, setAuthMember] = useState<User | null>(
-    localStorage.getItem("userData")
-      ? JSON.parse(localStorage.getItem("userData") as string)
-      : null
-  );
+  useEffect(() => {
+    if (!cookies.get("accessToken")) {
+      localStorage.removeItem("userData");
+    }
+  }, [cookies]);
+
+  const [authMember, setAuthMember] = useState<User | null>(() => {
+    const userData = localStorage.getItem("userData");
+    return userData ? JSON.parse(userData) : null;
+  });
 
   const [orderBuilder, setOrderBuilder] = useState<Date>(new Date());
+
   console.log("=== verify ===");
 
   return (

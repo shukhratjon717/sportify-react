@@ -88,38 +88,41 @@ export default function HomeNavbar(props: HomeNavbarProps) {
             onDelete={onDelete}
             onDeleteAll={onDeleteAll}
           />
-          {!authMember ? (
-            <Box className="login-holder" display="flex">
-              <Box className="signup">
+          <Stack className="signup-holder" sx={{ flexDirection: "row" , gap: "15px"}}>
+            {!authMember ? (
+              <Button
+                variant={"contained"}
+                className={"signup-button"}
+                onClick={() => setSignupOpen(true)}
+              >
+                SIGN UP
+              </Button>
+            ) : null}
+
+            {!authMember ? (
+              <Box>
                 <Button
                   variant="contained"
-                  className="signup-button"
-                  onClick={() => setSignupOpen(true)}
+                  className="login-button"
+                  onClick={() => setLoginOpen(true)}
                 >
-                  SIGN UP
+                  Login
                 </Button>
               </Box>
-              <Button
-                variant="contained"
-                className="login-button"
-                onClick={() => setLoginOpen(true)}
-              >
-                Login
-              </Button>
-            </Box>
-          ) : (
-            <img
-              className="user-avatar"
-              src={
-                authMember?.userImage
-                  ? `${serverApi}/${authMember?.userImage}`
-                  : "/icons/default-user.svg"
-              }
-              alt="User Avatar"
-              aria-haspopup="true"
-              onClick={handleLogoutClick}
-            />
-          )}
+            ) : (
+              <img
+                className="user-avatar"
+                src={
+                  authMember?.userImage
+                    ? `${serverApi}/${authMember?.userImage}`
+                    : "/icons/default-user.svg"
+                }
+                aria-haspopup={"true"}
+                onClick={handleLogoutClick}
+              />
+            )}
+          </Stack>
+
           <Menu
             anchorEl={anchorEl}
             id="account-menu"

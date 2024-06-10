@@ -1,7 +1,12 @@
 import axios from "axios";
 import { serverApi } from "../../lib/config";
 import { Product, ProductInquiry } from "../../lib/types/product";
-import { LoginInput, User, UserInput, UserUpdateInput } from "../../lib/types/user";
+import {
+  LoginInput,
+  User,
+  UserInput,
+  UserUpdateInput,
+} from "../../lib/types/user";
 
 class MemberService {
   private readonly path: string;
@@ -42,9 +47,9 @@ class MemberService {
       const result = await axios.post(url, input, { withCredentials: true });
       console.log("signup", result);
 
-      const user: User = result.data.member;
+      const user: User = result.data.user;
       console.log("user:", user);
-      localStorage.setItem("memberData", JSON.stringify(user));
+      localStorage.setItem("userData", JSON.stringify(user));
 
       return user;
     } catch (err) {
@@ -103,9 +108,9 @@ class MemberService {
 
       console.log("updateMember", result);
 
-      const member: User = result.data;
-      localStorage.setItem("userData", JSON.stringify(member));
-      return member;
+      const user: User = result.data;
+      localStorage.setItem("userData", JSON.stringify(user));
+      return user;
     } catch (err) {
       console.log("Error, updateMember:", err);
       throw err;
