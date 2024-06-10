@@ -175,7 +175,7 @@ export default function Products(props: ProductsProps) {
             </Stack>
 
             <Stack className={"dishes-filter-box2"}>
-              <Button
+              {/* <Button
                 variant={"contained"}
                 className={"order"}
                 color={
@@ -210,7 +210,7 @@ export default function Products(props: ProductsProps) {
                 onClick={() => searchGenderHandler(ProductGender.CHIDREN)}
               >
                 Children
-              </Button>
+              </Button> */}
             </Stack>
           </Stack>
 
