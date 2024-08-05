@@ -1,7 +1,7 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import Cookies from "universal-cookie";
-import { User } from "../../../lib/types/user";
-import { GlobalContext } from "../../hooks/useGlobals";
+import { User } from "../../lib/types/user";
+import { GlobalContext } from "../hooks/useGlobals";
 
 const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const cookies = new Cookies();
