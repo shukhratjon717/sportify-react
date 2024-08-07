@@ -1,25 +1,25 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Box, Button, Container, Icon, Stack } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  Badge,
+  Pagination,
+  PaginationItem,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import Badge from "@mui/material/Badge";
-import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useDispatch, useSelector } from "react-redux";
 import ProductService from "../../services/ProductService";
-import {
-  ProductCollection,
-  ProductGender,
-  ProductType,
-} from "../../../lib/enums/product.enum";
+import { ProductType } from "../../../lib/enums/product.enum";
 import { Product, ProductInquiry } from "../../../lib/types/product";
-import { Dispatch } from "@reduxjs/toolkit";
-import { setBrandProducts, setProducts } from "./slice";
-import { retrieveBrandProducts, retrieveProducts } from "./selector";
-import { createSelector } from "@reduxjs/toolkit";
+import { setProducts } from "./slice";
+import { retrieveProducts } from "./selector";
+import { createSelector, Dispatch } from "@reduxjs/toolkit";
 import { serverApi } from "../../../lib/config";
 import { useHistory } from "react-router-dom";
 import { CartItem } from "../../../lib/types/search";
@@ -28,12 +28,15 @@ import { CartItem } from "../../../lib/types/search";
 const actionDispatch = (dispatch: Dispatch) => ({
   setProducts: (data: Product[]) => dispatch(setProducts(data)),
 });
+
 const productsRetriever = createSelector(retrieveProducts, (products) => ({
   products,
 }));
+
 interface ProductsProps {
   onAdd: (item: CartItem) => void;
 }
+
 export default function Products(props: ProductsProps) {
   const { onAdd } = props;
   const { setProducts } = actionDispatch(useDispatch());
@@ -48,8 +51,8 @@ export default function Products(props: ProductsProps) {
   const history = useHistory();
 
   useEffect(() => {
-    const product = new ProductService();
-    product
+    const productService = new ProductService();
+    productService
       .getProducts(productSearch)
       .then((data) => setProducts(data))
       .catch((err) => console.log("Error on ProductsPage:", err));
@@ -63,16 +66,9 @@ export default function Products(props: ProductsProps) {
   }, [searchText]);
 
   /**Handlers */
-
   const searchTypeHandler = (collection: ProductType) => {
     productSearch.page = 1;
     productSearch.productType = collection;
-    setProductSearch({ ...productSearch });
-  };
-
-  const searchGenderHandler = (gender: ProductGender) => {
-    productSearch.page = 1;
-    productSearch.productGender = gender;
     setProductSearch({ ...productSearch });
   };
 
@@ -96,6 +92,69 @@ export default function Products(props: ProductsProps) {
     history.push(`/products/${id}`);
   };
 
+  const renderProductCards = (products: Product[]) => {
+    if (products.length === 0) {
+      return <Box className="no-data">Products are not available!</Box>;
+    }
+
+    return products.map((product: Product) => {
+      const imagePath = `${serverApi}/${product.productImages[0]}`;
+      return (
+        <Stack key={product._id} className={"product-card"}>
+          <Stack
+            className={"product-img"}
+            sx={{
+              backgroundImage: `url(${imagePath})`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            <Stack className={"hoverable"}>
+              <Button
+                className={"shop1-btn"}
+                onClick={(e) => {
+                  console.log("BUTTON PRESSED!");
+                  onAdd({
+                    _id: product._id,
+                    quantity: 1,
+                    name: product.productName,
+                    price: product.productPrice,
+                    image: product.productImages[0],
+                  });
+                  e.stopPropagation();
+                }}
+              >
+                <img
+                  src={"/icons/shopping-cart.svg"}
+                  style={{ display: "flex" }}
+                />
+              </Button>
+              <Stack>
+                <Button className={"view-btn"} sx={{ right: " 36px" }}>
+                  <Badge badgeContent={product.productViews} color="primary">
+                    <RemoveRedEyeIcon
+                      sx={{
+                        color: product.productViews === 0 ? "gray" : "white",
+                      }}
+                    />
+                  </Badge>
+                </Button>
+              </Stack>
+            </Stack>
+          </Stack>
+          <Box className={"product-desc"}>
+            <span className={"product-title"}>{product.productName}</span>
+            <div className={"product1-desc"}>
+              <MonetizationOnIcon />
+              {product.productPrice}
+            </div>
+          </Box>
+        </Stack>
+      );
+    });
+  };
+
   return (
     <div className={"products"}>
       <Container>
@@ -117,14 +176,12 @@ export default function Products(props: ProductsProps) {
                   onKeyDown={(e) => {
                     if (e.key === "Enter") searchProductHandler();
                   }}
-                  // onKeyDown={}
                 />
                 <Stack className={"search-btn"}>
                   <Button
                     className={"search-txt"}
                     variant="contained"
                     onClick={searchProductHandler}
-                    // endIcon={<SearchIcon />}
                   >
                     Search
                   </Button>
@@ -173,47 +230,7 @@ export default function Products(props: ProductsProps) {
                 Views
               </Button>
             </Stack>
-
-            <Stack className={"dishes-filter-box2"}>
-              {/* <Button
-                variant={"contained"}
-                className={"order"}
-                color={
-                  productSearch.productGender === ProductGender.MAN
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() => searchGenderHandler(ProductGender.MAN)}
-              >
-                Man
-              </Button>
-              <Button
-                variant={"contained"}
-                className={"order"}
-                color={
-                  productSearch.productGender === ProductGender.WOMAN
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() => searchGenderHandler(ProductGender.WOMAN)}
-              >
-                Woman
-              </Button>
-              <Button
-                variant={"contained"}
-                className={"order"}
-                color={
-                  productSearch.productGender === ProductGender.CHIDREN
-                    ? "primary"
-                    : "secondary"
-                }
-                onClick={() => searchGenderHandler(ProductGender.CHIDREN)}
-              >
-                Children
-              </Button> */}
-            </Stack>
           </Stack>
-
           <Stack className={"list-category-section"}>
             <Stack className={"product-category"}>
               <div className={"category-main"}>
@@ -275,79 +292,8 @@ export default function Products(props: ProductsProps) {
                 </Button>
               </div>
             </Stack>
-
             <Stack className={"product-wrapper"}>
-              {products.length !== 0 ? (
-                products.map((product: Product) => {
-                  const imagePath = `${serverApi}/${product.productImages[0]}`;
-                  return (
-                    <Stack key={product._id} className={"product-card"}>
-                      <Stack
-                        className={"product-img"}
-                        sx={{
-                          backgroundImage: `url(${imagePath})`,
-                          backgroundSize: "cover",
-                          backgroundRepeat: "no-repeat",
-                          backgroundPosition: "center",
-                        }}
-                      >
-                        <Stack className={"hoverable"}>
-                          <Button
-                            className={"shop1-btn"}
-                            onClick={(e) => {
-                              console.log("BUTTON PRESSED!");
-                              onAdd({
-                                _id: product._id,
-                                quantity: 1,
-                                name: product.productName,
-                                price: product.productPrice,
-                                image: product.productImages[0],
-                              });
-                              e.stopPropagation();
-                            }}
-                          >
-                            <img
-                              src={"/icons/shopping-cart.svg"}
-                              style={{ display: "flex" }}
-                            />
-                          </Button>
-                          <Stack>
-                            <Button
-                              className={"view-btn"}
-                              sx={{ right: " 36px" }}
-                            >
-                              <Badge
-                                badgeContent={product.productViews}
-                                color="primary"
-                              >
-                                <RemoveRedEyeIcon
-                                  sx={{
-                                    color:
-                                      product.productViews === 0
-                                        ? "gray"
-                                        : "white",
-                                  }}
-                                />
-                              </Badge>
-                            </Button>
-                          </Stack>
-                        </Stack>
-                      </Stack>
-                      <Box className={"product-desc"}>
-                        <span className={"product-title"}>
-                          {product.productName}
-                        </span>
-                        <div className={"product1-desc"}>
-                          <MonetizationOnIcon />
-                          {product.productPrice}
-                        </div>
-                      </Box>
-                    </Stack>
-                  );
-                })
-              ) : (
-                <Box className="no-data"> Products are not availabe!</Box>
-              )}
+              {renderProductCards(products)}
             </Stack>
           </Stack>
           <Stack className="pagination-section">
@@ -376,7 +322,6 @@ export default function Products(props: ProductsProps) {
       <div className="brands">
         <Container>
           <Stack className="brands-container">
-            {/* <Stack className="brands-title">Our Family Brands </Stack> */}
             <Stack className="brand-img">
               <Stack>
                 <div className={"brands-title"}>
@@ -392,6 +337,8 @@ export default function Products(props: ProductsProps) {
                 </div>
               </Stack>
               {products.length === 0 ? (
+                <Box className="no-data"> Products are not available!</Box>
+              ) : (
                 products.map((product, index) => {
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
                   return (
@@ -419,14 +366,11 @@ export default function Products(props: ProductsProps) {
                     </Stack>
                   );
                 })
-              ) : (
-                <Box className="no-data"> Products are not availabe!</Box>
               )}
             </Stack>
           </Stack>
         </Container>
       </div>
-
       <div className="address">
         <Container>
           <Stack className={"address-container"}></Stack>
