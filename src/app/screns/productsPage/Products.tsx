@@ -30,7 +30,7 @@ const actionDispatch = (dispatch: Dispatch) => ({
 });
 
 const productsRetriever = createSelector(retrieveProducts, (products) => ({
-  products,
+  products: Array.isArray(products) ? products : [],
 }));
 
 interface ProductsProps {
@@ -54,38 +54,51 @@ export default function Products(props: ProductsProps) {
     const productService = new ProductService();
     productService
       .getProducts(productSearch)
-      .then((data) => setProducts(data))
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setProducts(data);
+        } else {
+          console.error("Fetched data is not an array:", data);
+        }
+      })
       .catch((err) => console.log("Error on ProductsPage:", err));
-  }, [productSearch]);
+  }, [productSearch, setProducts]);
 
   useEffect(() => {
     if (searchText === "") {
-      productSearch.search = "";
-      setProductSearch({ ...productSearch });
+      setProductSearch((prevSearch) => ({ ...prevSearch, search: "" }));
     }
   }, [searchText]);
 
   /**Handlers */
   const searchTypeHandler = (collection: ProductType) => {
-    productSearch.page = 1;
-    productSearch.productType = collection;
-    setProductSearch({ ...productSearch });
+    setProductSearch((prevSearch) => ({
+      ...prevSearch,
+      page: 1,
+      productType: collection,
+    }));
   };
 
   const searchOrderHandler = (order: string) => {
-    productSearch.page = 1;
-    productSearch.order = order;
-    setProductSearch({ ...productSearch });
+    setProductSearch((prevSearch) => ({
+      ...prevSearch,
+      page: 1,
+      order,
+    }));
   };
 
   const searchProductHandler = () => {
-    productSearch.search = searchText;
-    setProductSearch({ ...productSearch });
+    setProductSearch((prevSearch) => ({
+      ...prevSearch,
+      search: searchText,
+    }));
   };
 
   const paginationHandler = (e: ChangeEvent<any>, value: number) => {
-    productSearch.page = value;
-    setProductSearch({ ...productSearch });
+    setProductSearch((prevSearch) => ({
+      ...prevSearch,
+      page: value,
+    }));
   };
 
   const chooseTypeHandler = (id: string) => {
@@ -97,7 +110,7 @@ export default function Products(props: ProductsProps) {
       return <Box className="no-data">Products are not available!</Box>;
     }
 
-    return products.map((product: Product) => {
+    return products.map((product) => {
       const imagePath = `${serverApi}/${product.productImages[0]}`;
       return (
         <Stack key={product._id} className={"product-card"}>
@@ -131,7 +144,7 @@ export default function Products(props: ProductsProps) {
                 />
               </Button>
               <Stack>
-                <Button className={"view-btn"} sx={{ right: " 36px" }}>
+                <Button className={"view-btn"} sx={{ right: "36px" }}>
                   <Badge badgeContent={product.productViews} color="primary">
                     <RemoveRedEyeIcon
                       sx={{
@@ -298,11 +311,7 @@ export default function Products(props: ProductsProps) {
           </Stack>
           <Stack className="pagination-section">
             <Pagination
-              count={
-                products.length !== 0
-                  ? productSearch.page + 1
-                  : productSearch.page
-              }
+              count={Math.ceil((products.length || 1) / productSearch.limit)}
               page={productSearch.page}
               renderItem={(item) => (
                 <PaginationItem
@@ -327,7 +336,6 @@ export default function Products(props: ProductsProps) {
                 <div className={"brands-title"}>
                   Check out our latest trends
                 </div>
-                {"\n"}
                 <div className={"brand-paragraph"}>
                   Explore the latest fashion trends and styles with our diverse
                   collection. From casual to formal wear, we have something for
@@ -336,37 +344,7 @@ export default function Products(props: ProductsProps) {
                   all day long. Start shopping now!
                 </div>
               </Stack>
-              {products.length === 0 ? (
-                <Box className="no-data"> Products are not available!</Box>
-              ) : (
-                products.map((product, index) => {
-                  const imagePath = `${serverApi}/${product.productImages[0]}`;
-                  return (
-                    <Stack key={index} className={"brand-card"}>
-                      <Stack
-                        className={"brands-img"}
-                        sx={{
-                          backgroundImage: `url(${imagePath})`,
-                          backgroundSize: "cover",
-                          backgroundRepeat: "no-repeat",
-                          backgroundPosition: "center",
-                        }}
-                      ></Stack>
-                      <Box className={"brand-desc"}>
-                        <span className={"brand-title"}>
-                          {product.productName}
-                        </span>
-                        <div className={"brand-money-holder"}>
-                          <div className={"brand-money"}>
-                            <MonetizationOnIcon />
-                            {product.productPrice}
-                          </div>
-                        </div>
-                      </Box>
-                    </Stack>
-                  );
-                })
-              )}
+              {renderProductCards(products)}
             </Stack>
           </Stack>
         </Container>
