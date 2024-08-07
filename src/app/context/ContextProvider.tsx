@@ -12,16 +12,10 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   }, [cookies]);
 
-  // const [authMember, setAuthMember] = useState<User | null>(() => {
-  //   const userData = localStorage.getItem("userData");
-  //   return userData ? JSON.parse(userData) : null;
-  // });
-
-  const [authMember, setAuthMember] = useState<User | null>(
-    localStorage.getItem("userData")
-      ? JSON.parse(localStorage.getItem("userData") as string)
-      : null
-  );
+  const [authMember, setAuthMember] = useState<User | null>(() => {
+    const userData = localStorage.getItem("userData");
+    return userData ? JSON.parse(userData) : null;
+  });
 
   const [orderBuilder, setOrderBuilder] = useState<Date>(new Date());
 

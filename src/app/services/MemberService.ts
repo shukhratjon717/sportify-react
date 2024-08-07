@@ -48,7 +48,7 @@ class MemberService {
 
       const user: User = result.data.user;
       console.log("user:", user);
-      localStorage.setItem("userData", JSON.stringify(user));
+      localStorage.setItem("memberData", JSON.stringify(user));
 
       return user;
     } catch (err) {
@@ -79,7 +79,7 @@ class MemberService {
       const result = await axios.post(url, {}, { withCredentials: true });
       console.log("logout", result);
 
-      localStorage.removeItem("userData");
+      localStorage.removeItem("memberData");
 
       return result.data.logout;
     } catch (err) {
@@ -108,7 +108,7 @@ class MemberService {
       console.log("updateMember", result);
 
       const user: User = result.data;
-      localStorage.setItem("userData", JSON.stringify(user));
+      localStorage.setItem("memberData", JSON.stringify(user));
       return user;
     } catch (err) {
       console.log("Error, updateMember:", err);
