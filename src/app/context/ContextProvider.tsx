@@ -8,12 +8,12 @@ const ContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     if (!cookies.get("accessToken")) {
-      localStorage.removeItem("userData");
+      localStorage.removeItem("memberData");
     }
   }, [cookies]);
 
   const [authMember, setAuthMember] = useState<User | null>(() => {
-    const userData = localStorage.getItem("userData");
+    const userData = localStorage.getItem("memberData");
     return userData ? JSON.parse(userData) : null;
   });
 
