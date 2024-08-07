@@ -51,29 +51,17 @@ export default function Products(props: ProductsProps) {
   const history = useHistory();
 
   useEffect(() => {
-    const productService = new ProductService();
-    productService
+    const product = new ProductService();
+    product
       .getProducts(productSearch)
-      .then((response) => {
-        if (typeof response === 'string') {
-          // Check if the response is a string and possibly HTML content
-          console.error("Fetched data is not JSON:", response);
-          return;
-        }
-        if (Array.isArray(response)) {
-          setProducts(response);
-        } else {
-          console.error("Fetched data is not an array:", response);
-        }
-      })
-      .catch((err) => {
-        console.error("Error on ProductsPage:", err);
-      });
-  }, [productSearch, setProducts]);
+      .then((data) => setProducts(data))
+      .catch((err) => console.log("Error on ProductsPage:", err));
+  }, [productSearch]);
 
   useEffect(() => {
     if (searchText === "") {
-      setProductSearch((prevSearch) => ({ ...prevSearch, search: "" }));
+      productSearch.search = "";
+      setProductSearch({ ...productSearch });
     }
   }, [searchText]);
 
