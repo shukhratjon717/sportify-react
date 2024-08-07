@@ -24,16 +24,14 @@ const popularProductsRetriever = createSelector(
 export default function PopularProducts() {
   const { popularProducts } = useSelector(popularProductsRetriever);
 
-  const productsArray = Array.isArray(popularProducts) ? popularProducts : [];
-
   return (
     <div className="popular-dishes-frame">
       <Container>
         <Stack className="popular-section">
-          <Box className="category-title">Popular Products</Box>
+          <Box className="category-title"> Popular Products</Box>
           <Stack className="cards-frame">
-            {productsArray.length !== 0 ? (
-              productsArray.map((product: Product) => {
+            {popularProducts.length !== 0 ? (
+              popularProducts.map((product: Product) => {
                 const imagePath = `${serverApi}/${product.productImages[0]}`;
                 return (
                   <CssVarsProvider key={product._id}>
