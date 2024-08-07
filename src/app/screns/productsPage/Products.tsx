@@ -54,14 +54,21 @@ export default function Products(props: ProductsProps) {
     const productService = new ProductService();
     productService
       .getProducts(productSearch)
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setProducts(data);
+      .then((response) => {
+        if (typeof response === 'string') {
+          // Check if the response is a string and possibly HTML content
+          console.error("Fetched data is not JSON:", response);
+          return;
+        }
+        if (Array.isArray(response)) {
+          setProducts(response);
         } else {
-          console.error("Fetched data is not an array:", data);
+          console.error("Fetched data is not an array:", response);
         }
       })
-      .catch((err) => console.log("Error on ProductsPage:", err));
+      .catch((err) => {
+        console.error("Error on ProductsPage:", err);
+      });
   }, [productSearch, setProducts]);
 
   useEffect(() => {
