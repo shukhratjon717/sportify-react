@@ -8,17 +8,16 @@ import { CssVarsProvider } from "@mui/joy/styles";
 import CardOverflow from "@mui/joy/CardOverflow";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DescriptionOutLinedIcon from "@mui/icons-material/OutboundOutlined";
-
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { retrievePopularProducts } from "./selector";
 import { Product } from "../../../lib/types/product";
-import { ProductCollection } from "../../../lib/enums/product.enum";
 import { serverApi } from "../../../lib/config";
 
+// Create a selector to get popular products from the state
 const popularProductsRetriever = createSelector(
   retrievePopularProducts,
-  (popularProducts) => ({ popularProducts })
+  (popularProducts) => ({ popularProducts: Array.isArray(popularProducts) ? popularProducts : [] })
 );
 
 export default function PopularProducts() {
@@ -28,22 +27,22 @@ export default function PopularProducts() {
     <div className="popular-dishes-frame">
       <Container>
         <Stack className="popular-section">
-          <Box className="category-title"> Popular Products</Box>
+          <Box className="category-title">Popular Products</Box>
           <Stack className="cards-frame">
-            {popularProducts.length !== 0 ? (
+            {popularProducts.length > 0 ? (
               popularProducts.map((product: Product) => {
                 const imagePath = `${serverApi}/${product.productImages[0]}`;
                 return (
                   <CssVarsProvider key={product._id}>
-                    <Card className={"card"}>
+                    <Card className="card">
                       <CardCover>
-                        <img src={imagePath} alt="" />
+                        <img src={imagePath} alt={product.productName} />
                       </CardCover>
-                      <CardCover className={"card-cover"} />
+                      <CardCover className="card-cover" />
                       <CardContent sx={{ justifyContent: "flex-end" }}>
                         <Stack
-                          flexDirection={"row"}
-                          justifyContent={"space-between"}
+                          flexDirection="row"
+                          justifyContent="space-between"
                         >
                           <Typography
                             level="title-lg"
