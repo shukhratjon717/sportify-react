@@ -1,12 +1,9 @@
-import React from "react";
 import { Box, Container, Stack } from "@mui/material";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
 import CardOverflow from "@mui/joy/CardOverflow";
 import Typography from "@mui/joy/Typography";
 import { CssVarsProvider } from "@mui/joy/styles";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import Divider from "../../components/divider";
 
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
@@ -27,6 +24,9 @@ export default function NewProducts() {
 
   console.log("newProducts:", newProducts);
 
+  // Ensure newProducts is an array
+  const productsArray = Array.isArray(newProducts) ? newProducts : [];
+
   return (
     <div className={"new-products-frame"}>
       <Container>
@@ -34,8 +34,8 @@ export default function NewProducts() {
           <Box className={"category-title"}>Explore Our Collections</Box>
           <Stack className={"cards-frame"}>
             <CssVarsProvider>
-              {newProducts.length !== 0 ? (
-                newProducts.map((product: Product) => {
+              {productsArray.length !== 0 ? (
+                productsArray.map((product: Product) => {
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
                   const sizeType =
                     product.productCollection === ProductCollection.CHIDREN
