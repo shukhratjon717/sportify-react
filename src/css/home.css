@@ -180,7 +180,6 @@
   align-items: center;
 }
 .homepage .new-products-frame .title {
-
   width: auto;
   height: auto;
   font-size: 20px;
@@ -234,82 +233,148 @@
 }
 
 /* ACTIVE USERS */
+/* ==============================
+   ACTIVE USERS
+============================== */
 .homepage .active-users-frame {
   width: 100%;
-  height: 550px;
-  background: #ffffff;
+  min-height: 600px;
+  background: #fefefe;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
 }
 
 .homepage .active-users-frame .active-section {
-  margin-top: 93px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.homepage .active-users-frame .active-category-title {
+  font-family: "Dancing Script", cursive;
+  font-weight: 700;
+  font-size: 42px;
+  color: #0d47a1;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.homepage .active-users-frame .active-users-cards-frame {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+}
+
+/* Individual user card */
+.homepage .active-users-frame .active-card {
+  background: #f8f8ff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.homepage .active-users-frame .active-category-title {
-  font-family: "Dancing Script";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 36px;
-  line-height: 43px;
-  display: flex;
-  justify-content: center;
+.homepage .active-users-frame .active-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
-.homepage .active-users-frame .active-users-cards-frame {
+.homepage .active-users-frame .active-card img {
   width: 100%;
-  margin-top: 56px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  height: 220px;
+  object-fit: cover;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.homepage .active-section .active-users-cards-frame .active-card {
-  height: 305px;
-  width: 302px;
-}
-
-.homepage .active-section .active-users-cards-frame .users-detail {
-  width: auto;
-  height: 49%;
-  display: flex;
-  justify-content: center;
-  margin-top: -12px;
-  border-top: 1px solid;
-  border-color: #f8f8ff;
-  background-color: #f8f8ff;
-}
-
-.homepage .active-users-frame .users-detail .info {
+/* User info */
+.homepage .active-users-frame .users-detail {
   width: 100%;
+  padding: 15px;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  background: #f8f8ff;
 }
 
-.homepage .active-users-frame .users-detail .users-title {
-  width: 65px;
-  font-weight: 500;
+.homepage .active-users-frame .users-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0d47a1;
+  margin-bottom: 4px;
+  text-align: center;
 }
 
+.homepage .active-users-frame .users-role {
+  font-size: 14px;
+  font-weight: 400;
+  color: #555;
+  text-align: center;
+}
+
+/* No data message */
 .homepage .active-users-frame .no-data {
   width: 100%;
   height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-transform: capitalize;
-  font-family: "Poppins";
-  font-style: normal;
+  font-size: 28px;
   font-weight: 400;
-  font-size: 30px;
-  line-height: 34px;
   color: #e3c08d;
+  text-transform: capitalize;
 }
+
+/* ==============================
+   RESPONSIVE
+============================== */
+@media screen and (max-width: 1024px) {
+  .homepage .active-users-frame {
+    padding: 40px 20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .homepage .active-users-frame .active-users-cards-frame {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+  .homepage .active-users-frame .active-card img {
+    height: 180px;
+  }
+
+  .homepage .active-users-frame .active-category-title {
+    font-size: 36px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .homepage .active-users-frame {
+    padding: 30px 10px;
+  }
+
+  .homepage .active-users-frame .active-category-title {
+    font-size: 32px;
+  }
+
+  .homepage .active-users-frame .users-title {
+    font-size: 16px;
+  }
+
+  .homepage .active-users-frame .users-role {
+    font-size: 12px;
+  }
+}
+
+/* EVENTS */
 
 .homepage .events-frame {
   width: 100%;

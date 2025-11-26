@@ -43,7 +43,12 @@ export default function HomeNavbar(props: HomeNavbarProps) {
     handleCloseLogout,
     handleLogoutRequest,
   } = props;
+
   const { authMember } = useGlobals();
+
+  // React Router v6 NavLink class handler
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    isActive ? "underline" : "";
 
   return (
     <div className="home-navbar">
@@ -54,33 +59,39 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               <img className="logo-icon" src="/img/Sportify.png" alt="Logo" />
             </Stack>
           </Box>
+
           <Box className="hover-line">
-            <NavLink to="/" activeClassName="underline">
+            <NavLink to="/" className={navLinkClass}>
               Home
             </NavLink>
           </Box>
           <Box className="hover-line">
-            <NavLink to="/products" activeClassName="underline">
+            <NavLink to="/products" className={navLinkClass}>
               Products
             </NavLink>
           </Box>
+
           {authMember && (
             <>
               <Box className="hover-line">
-                <NavLink to="/orders" activeClassName="underline">
+                <NavLink to="/orders" className={navLinkClass}>
                   Orders
                 </NavLink>
               </Box>
               <Box className="hover-line">
-                <NavLink to="/user-page" activeClassName="underline">
+                <NavLink to="/user-page" className={navLinkClass}>
                   My Page
                 </NavLink>
               </Box>
             </>
           )}
+
           <Box className="hover-line">
-            <NavLink to="/help">Help</NavLink>
+            <NavLink to="/help" className={navLinkClass}>
+              Help
+            </NavLink>
           </Box>
+
           <Basket
             cartItems={cartItems}
             onAdd={onAdd}
@@ -88,36 +99,35 @@ export default function HomeNavbar(props: HomeNavbarProps) {
             onDelete={onDelete}
             onDeleteAll={onDeleteAll}
           />
-          <Stack className="signup-holder" sx={{ flexDirection: "row" , gap: "15px"}}>
-            {!authMember ? (
+
+          <Stack direction="row" spacing={1}>
+            {!authMember && (
               <Button
-                variant={"contained"}
-                className={"signup-button"}
+                variant="contained"
+                className="signup-button"
                 onClick={() => setSignupOpen(true)}
               >
                 SIGN UP
               </Button>
-            ) : null}
+            )}
 
             {!authMember ? (
-              <Box>
-                <Button
-                  variant="contained"
-                  className="login-button"
-                  onClick={() => setLoginOpen(true)}
-                >
-                  Login
-                </Button>
-              </Box>
+              <Button
+                variant="contained"
+                className="login-button"
+                onClick={() => setLoginOpen(true)}
+              >
+                Login
+              </Button>
             ) : (
               <img
                 className="user-avatar"
                 src={
                   authMember?.userImage
-                    ? `${serverApi}/${authMember?.userImage}`
+                    ? `${serverApi}/${authMember.userImage}`
                     : "/icons/default-user.svg"
                 }
-                aria-haspopup={"true"}
+                aria-haspopup="true"
                 onClick={handleLogoutClick}
               />
             )}
@@ -125,7 +135,6 @@ export default function HomeNavbar(props: HomeNavbarProps) {
 
           <Menu
             anchorEl={anchorEl}
-            id="account-menu"
             open={Boolean(anchorEl)}
             onClose={handleCloseLogout}
             onClick={handleCloseLogout}
@@ -166,6 +175,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
             </MenuItem>
           </Menu>
         </Stack>
+
         <Stack className="header-frame">
           <Stack className="detail">
             <Box className="head-main-txt">Discover trends with Sportify</Box>
@@ -175,9 +185,9 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               <div className="logo-img">Collections </div>
             </Box>
             <Box className="logo-img">
-              <div className="logo-img1"> </div>
-              <div className="logo-img2"></div>
-              <div className="logo-img3"></div>
+              <div className="logo-img1" />
+              <div className="logo-img2" />
+              <div className="logo-img3" />
             </Box>
           </Box>
         </Stack>

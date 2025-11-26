@@ -1,10 +1,9 @@
 import React from "react";
-
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { Routes, Route, useMatch } from "react-router-dom";
 import Products from "./Products";
+import ChosenProduct from "./ChosenProduct";
 import "../../../css/products.css";
 import { CartItem } from "../../../lib/types/search";
-import ChosenProduct from "./ChosenProduct";
 
 interface ProductsPageProps {
   onAdd: (item: CartItem) => void;
@@ -12,18 +11,14 @@ interface ProductsPageProps {
 
 export default function ProductsPage(props: ProductsPageProps) {
   const { onAdd } = props;
-  const products = useRouteMatch();
-  console.log("products:", products);
+  const match = useMatch("/products/*"); // matches "/products" and nested routes
+
   return (
-    <div className={"products-page"}>
-      <Switch>
-        <Route path={`${products.path}/:productId`}>
-          <ChosenProduct onAdd={onAdd} />
-        </Route>
-        <Route path={`${products.path}`}>
-          <Products onAdd={onAdd} />
-        </Route>
-      </Switch>
+    <div className="products-page">
+      <Routes>
+        <Route path=":productId" element={<ChosenProduct onAdd={onAdd} />} />
+        <Route path="" element={<Products onAdd={onAdd} />} />
+      </Routes>
     </div>
   );
 }
