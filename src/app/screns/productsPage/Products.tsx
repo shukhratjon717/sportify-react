@@ -11,7 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSelector, Dispatch } from "@reduxjs/toolkit";
 
 import ProductService from "../../services/ProductService";
-import { ProductCollection, ProductGender, ProductType } from "../../../lib/enums/product.enum";
+import {
+  ProductCollection,
+  ProductGender,
+  ProductType,
+} from "../../../lib/enums/product.enum";
 import { Product, ProductInquiry } from "../../../lib/types/product";
 import { CartItem } from "../../../lib/types/search";
 import { setProducts } from "./slice";
@@ -88,7 +92,11 @@ export default function Products(props: ProductsProps) {
   return (
     <div className="products">
       <Container>
-        <Stack direction="column" alignItems="center" className="products-frame">
+        <Stack
+          direction="column"
+          alignItems="center"
+          className="products-frame"
+        >
           {/* Search & Filters */}
           <Stack className="upper-frame">
             <Box className="title">Sportify Products</Box>
@@ -127,7 +135,9 @@ export default function Products(props: ProductsProps) {
               <Button
                 variant="contained"
                 className="order"
-                color={productSearch.order === "createdAt" ? "primary" : "secondary"}
+                color={
+                  productSearch.order === "createdAt" ? "primary" : "secondary"
+                }
                 onClick={() => searchOrderHandler("createdAt")}
               >
                 New
@@ -135,7 +145,11 @@ export default function Products(props: ProductsProps) {
               <Button
                 variant="contained"
                 className="order"
-                color={productSearch.order === "productPrice" ? "primary" : "secondary"}
+                color={
+                  productSearch.order === "productPrice"
+                    ? "primary"
+                    : "secondary"
+                }
                 onClick={() => searchOrderHandler("productPrice")}
               >
                 Price
@@ -143,7 +157,11 @@ export default function Products(props: ProductsProps) {
               <Button
                 variant="contained"
                 className="order"
-                color={productSearch.order === "productViews" ? "primary" : "secondary"}
+                color={
+                  productSearch.order === "productViews"
+                    ? "primary"
+                    : "secondary"
+                }
                 onClick={() => searchOrderHandler("productViews")}
               >
                 Views
@@ -177,7 +195,11 @@ export default function Products(props: ProductsProps) {
                   <Button
                     key={type}
                     variant="contained"
-                    color={productSearch.productType === type ? "primary" : "secondary"}
+                    color={
+                      productSearch.productType === type
+                        ? "primary"
+                        : "secondary"
+                    }
                     onClick={() => searchTypeHandler(type)}
                   >
                     {type.charAt(0) + type.slice(1).toLowerCase()}
@@ -216,19 +238,32 @@ export default function Products(props: ProductsProps) {
                               });
                             }}
                           >
-                            <img src="/icons/shopping-cart.svg" style={{ display: "flex" }} />
+                            <img
+                              src="/icons/shopping-cart.svg"
+                              style={{ display: "flex" }}
+                            />
                           </Button>
                           <Button className="view-btn" sx={{ right: "36px" }}>
-                            <Badge badgeContent={product.productViews} color="primary">
+                            <Badge
+                              badgeContent={product.productViews}
+                              color="primary"
+                            >
                               <RemoveRedEyeIcon
-                                sx={{ color: product.productViews === 0 ? "gray" : "white" }}
+                                sx={{
+                                  color:
+                                    product.productViews === 0
+                                      ? "gray"
+                                      : "white",
+                                }}
                               />
                             </Badge>
                           </Button>
                         </Stack>
                       </Stack>
                       <Box className="product-desc">
-                        <span className="product-title">{product.productName}</span>
+                        <span className="product-title">
+                          {product.productName}
+                        </span>
                         <div className="product1-desc">
                           <MonetizationOnIcon />
                           {product.productPrice}
@@ -246,12 +281,19 @@ export default function Products(props: ProductsProps) {
           {/* Pagination */}
           <Stack className="pagination-section">
             <Pagination
-              count={products.length !== 0 ? productSearch.page + 1 : productSearch.page}
+              count={
+                products.length !== 0
+                  ? productSearch.page + 1
+                  : productSearch.page
+              }
               page={productSearch.page}
               onChange={paginationHandler}
               renderItem={(item) => (
                 <PaginationItem
-                  components={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+                  components={{
+                    previous: ArrowBackIcon,
+                    next: ArrowForwardIcon,
+                  }}
                   {...item}
                   color="secondary"
                 />
@@ -276,8 +318,10 @@ export default function Products(props: ProductsProps) {
                   all day long. Start shopping now!
                 </div>
               </Stack>
+
               {products.length !== 0 ? (
-                products.map((product, index) => {
+                products.slice(0, 3).map((product, index) => {
+                  // ← only first 3 products
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
                   return (
                     <Stack key={index} className="brand-card">
@@ -291,7 +335,9 @@ export default function Products(props: ProductsProps) {
                         }}
                       />
                       <Box className="brand-desc">
-                        <span className="brand-title">{product.productName}</span>
+                        <span className="brand-title">
+                          {product.productName}
+                        </span>
                         <div className="brand-money-holder">
                           <div className="brand-money">
                             <MonetizationOnIcon />
