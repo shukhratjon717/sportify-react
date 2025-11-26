@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Box, Container, Stack } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -6,78 +7,81 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import "../../../css/userPage.css";
 import { Settings } from "./Settings";
 import { useGlobals } from "../../hooks/useGlobals";
-import { useHistory } from "react-router-dom";
 import { serverApi } from "../../../lib/config";
 import { UserType } from "../../../lib/enums/user.enum";
+import { useNavigate } from "react-router-dom";
 
 export default function UsersPage() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { authMember } = useGlobals();
 
-  if (!authMember) history.push("/");
+  useEffect(() => {
+    if (!authMember) {
+      navigate("/", { replace: true });
+    }
+  }, [authMember, navigate]);
+
+  // Show nothing while redirecting or loading authMember
+  if (!authMember) return null;
+
   return (
-    <div className={"user-page"}>
+    <div className="user-page">
       <Container>
-        <Stack className={"my-page-frame"}>
-          <Stack className={"my-page-left"}>
-            <Box display={"flex"} flexDirection={"column"}>
-              <Box className={"menu-name"}>Modify Member Details</Box>
-              <Box className={"menu-content"}>
+        <Stack
+          className="my-page-frame"
+          direction={{ xs: "column", md: "row" }}
+          spacing={3}
+        >
+          {/* Left Panel */}
+          <Stack className="my-page-left" flex={1}>
+            <Box>
+              <Box className="menu-name">Modify Member Details</Box>
+              <Box className="menu-content">
                 <Settings />
               </Box>
             </Box>
           </Stack>
 
-          <Stack className={"my-page-right"}>
-            <Box className={"order-info-box"}>
-              <Box
-                display={"flex"}
-                flexDirection={"column"}
-                alignItems={"center"}
-              >
-                <div className={"order-user-img"}>
+          {/* Right Panel */}
+          <Stack className="my-page-right" flex={1}>
+            <Box className="order-info-box">
+              <Box display="flex" flexDirection="column" alignItems="center">
+                <div className="order-user-img">
                   <img
                     src={
-                      authMember?.userImage
+                      authMember.userImage
                         ? `${serverApi}/${authMember.userImage}`
                         : "/icons/default-user.svg"
                     }
-                    className={"order-user-avatar"}
+                    className="order-user-avatar"
+                    alt="User"
                   />
-                  <div className={"order-user-icon-box"}>
+                  <div className="order-user-icon-box">
                     <img
                       src={
-                        authMember?.userType === UserType.SHOP
+                        authMember.userType === UserType.SHOP
                           ? "/img/soprtifyShop.png"
                           : "/icons/user-badge.svg"
                       }
+                      alt="Badge"
                     />
                   </div>
                 </div>
-                <span className={"order-user-name"}>
-                  {" "}
-                  {authMember?.userNick}{" "}
-                </span>
-                <span className={"order-user-prof"}>
-                  {" "}
-                  {authMember?.userType}{" "}
-                </span>
-                <span className={"order-user-prof"}>
-                  {" "}
-                  {authMember?.userAddress
-                    ? authMember.userAddress
-                    : "Do not exist"}
+                <span className="order-user-name">{authMember.userNick || "No Name"}</span>
+                <span className="order-user-prof">{authMember.userType || "Member"}</span>
+                <span className="order-user-prof">
+                  {authMember.userAddress || "No Address"}
                 </span>
               </Box>
-              <Box className={"user-media-box"}>
+
+              <Box className="user-media-box" display="flex" gap={1} mt={1} mb={1}>
                 <FacebookIcon />
                 <InstagramIcon />
                 <TelegramIcon />
                 <YouTubeIcon />
               </Box>
-              <p className={"user-desc"}>
-                {authMember?.userDesc ? authMember.userDesc : "No Description"}
-              </p>
+
+              <p className="user-desc">{authMember.userDesc || "No Description"}</p>
             </Box>
           </Stack>
         </Stack>

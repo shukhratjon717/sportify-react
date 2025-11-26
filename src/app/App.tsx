@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Switch, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import HomeNavbar from "./components/headers/HomeNavbar";
 import OtherNavbar from "./components/headers/OtherNavbar";
 import Footer from "./components/footer";
@@ -8,15 +8,13 @@ import AuthenticationModal from "./components/auth";
 import { Messages } from "../lib/config";
 import MemberService from "./services/MemberService";
 import { useGlobals } from "./hooks/useGlobals";
-import {
-  sweetErrorHandling,
-  sweetTopSmallSuccessAlert,
-} from "../lib/sweetAlerts";
+import { sweetErrorHandling, sweetTopSmallSuccessAlert } from "../lib/sweetAlerts";
 import ProductsPage from "./screns/productsPage";
 import OrdersPage from "./screns/ordersPage";
 import UsersPage from "./screns/userPage";
 import HelpPage from "./screns/helpPage";
 import HomePage from "./screns/homePage";
+
 import "../css/app.css";
 import "../css/navbar.css";
 import "../css/footer.css";
@@ -26,79 +24,65 @@ function App() {
   const location = useLocation();
   const { setAuthMember } = useGlobals();
   const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = useBasket();
+
   const [signupOpen, setSignupOpen] = useState<boolean>(false);
   const [loginOpen, setLoginOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  /** Handlers **/
 
+  /** Handlers **/
   const handleSignupClose = () => setSignupOpen(false);
   const handleLoginClose = () => setLoginOpen(false);
 
-  const handleLogOutClick = (e: React.MouseEvent<HTMLElement>) => {
+  const handleLogoutClick = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(e.currentTarget);
   };
+
   const handleCloseLogout = () => setAnchorEl(null);
+
   const handleLogoutRequest = async () => {
     try {
-      const user = new MemberService();
-      await user.logout();
+      const userService = new MemberService();
+      await userService.logout();
 
       await sweetTopSmallSuccessAlert("success", 700);
       setAuthMember(null);
+      handleCloseLogout();
     } catch (err) {
-      console.log(err);
+      console.error(err);
       sweetErrorHandling(Messages.error1);
     }
+  };
+
+  const navbarProps = {
+    cartItems,
+    onAdd,
+    onRemove,
+    onDelete,
+    onDeleteAll,
+    setSignupOpen,
+    setLoginOpen,
+    anchorEl,
+    handleLogoutClick,
+    handleCloseLogout,
+    handleLogoutRequest,
   };
 
   return (
     <>
       {location.pathname === "/" ? (
-        <HomeNavbar
-          cartItems={cartItems}
-          onAdd={onAdd}
-          onRemove={onRemove}
-          onDelete={onDelete}
-          onDeleteAll={onDeleteAll}
-          setSignupOpen={setSignupOpen}
-          setLoginOpen={setLoginOpen}
-          anchorEl={anchorEl}
-          handleLogoutClick={handleLogOutClick}
-          handleCloseLogout={handleCloseLogout}
-          handleLogoutRequest={handleLogoutRequest}
-        />
+        <HomeNavbar {...navbarProps} />
       ) : (
-        <OtherNavbar
-          cartItems={cartItems}
-          onAdd={onAdd}
-          onRemove={onRemove}
-          onDelete={onDelete}
-          onDeleteAll={onDeleteAll}
-          setSignupOpen={setSignupOpen}
-          setLoginOpen={setLoginOpen}
-          anchorEl={anchorEl}
-          handleLogoutClick={handleLogOutClick}
-          handleCloseLogout={handleCloseLogout}
-          handleLogoutRequest={handleLogoutRequest}
-        />
+        <OtherNavbar {...navbarProps} />
       )}
-      <Switch>
-        <Route path="/products">
-          <ProductsPage onAdd={onAdd} />
-        </Route>
-        <Route path="/orders">
-          <OrdersPage />
-        </Route>
-        <Route path="/user-page">
-          <UsersPage />
-        </Route>
-        <Route path="/help">
-          <HelpPage />
-        </Route>
-        <Route path="/">
-          <HomePage />
-        </Route>
-      </Switch>
+
+      <Routes>
+        <Route path="/products" element={<ProductsPage onAdd={onAdd} />} />
+        <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/user-page" element={<UsersPage />} />
+        <Route path="/help" element={<HelpPage />} />
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+
       <Footer />
 
       <AuthenticationModal
