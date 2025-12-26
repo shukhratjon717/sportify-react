@@ -1,9 +1,36 @@
-import { Box, Button, Container, ListItemIcon, Menu, MenuItem, Stack } from "@mui/material";
+import React from "react";
+import {
+  AppBar,
+  Toolbar,
+  Container,
+  Box,
+  IconButton,
+  Avatar,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  Typography,
+  Button,
+  Stack,
+  useMediaQuery,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
+import {
+  Menu as MenuIcon,
+  Logout,
+  Home,
+  Category,
+  Help,
+  Person,
+} from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
 import { CartItem } from "../../../lib/types/search";
 import { useGlobals } from "../../hooks/useGlobals";
-import { Logout } from "@mui/icons-material";
 import { serverApi } from "../../../lib/config";
 
 interface OtherNavbarProps {
@@ -36,112 +63,243 @@ export default function OtherNavbar(props: OtherNavbarProps) {
   } = props;
 
   const { authMember } = useGlobals();
+  const isMobile = useMediaQuery("(max-width: 900px)");
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
-  const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "underline" : "";
+  const navItems = [
+    { label: "Home", path: "/", icon: <Home /> },
+    { label: "Products", path: "/products", icon: <Category /> },
+    ...(authMember
+      ? [{ label: "My Page", path: "/user-page", icon: <Person /> }]
+      : []),
+    { label: "Help", path: "/help", icon: <Help /> },
+  ];
+
+  const avatarSrc = authMember?.userImage
+    ? `${serverApi}/${authMember.userImage}`
+    : "/icons/default-user.svg";
+
+  const activeStyle = { color: "#1db954", fontWeight: 700 };
+  const inactiveStyle = { color: "inherit", fontWeight: 500 };
 
   return (
-    <div className="other-navbar">
-      <div className="other-navbar-header">
-        Use Code Sportify717 for 10% off your first order
-      </div>
-      <Container className="navbar-container">
-        <Stack className="menu" direction="row" alignItems="center" spacing={2}>
-          <Box className="brand-holder">
-            <NavLink to="/">
-              <img className="logo-icon" src="/img/Sportify.png" alt="Logo" />
-            </NavLink>
-          </Box>
+    <>
+      {/* Top Promo Bar */}
+      <Box
+        sx={{
+          bgcolor: "#1db954",
+          color: "white",
+          textAlign: "center",
+          py: 1,
+          fontSize: { xs: "0.85rem", sm: "1rem" },
+          fontWeight: 600,
+        }}
+      >
+        Use Code <strong>Sportify717</strong> for 10% off your first order
+      </Box>
 
-          <Box className="hover-line">
-            <NavLink to="/" className={getNavLinkClass}>
-              Home
-            </NavLink>
-          </Box>
-          <Box className="hover-line">
-            <NavLink to="/products" className={getNavLinkClass}>
-              Products
-            </NavLink>
-          </Box>
-          {authMember && (
-            <Box className="hover-line">
-              <NavLink to="/user-page" className={getNavLinkClass}>
-                My Page
+      {/* Main Navbar */}
+      <AppBar
+        position="static"
+        color="transparent"
+        elevation={0}
+        sx={{ bgcolor: "#fff", py: 1 }}
+      >
+        <Container maxWidth="xl">
+          <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
+            {/* Logo */}
+            <Box>
+              <NavLink to="/">
+                <img
+                  src="/img/Sportify.png"
+                  alt="Sportify Logo"
+                  style={{ height: 48, borderRadius: 8 }}
+                />
               </NavLink>
             </Box>
-          )}
-          <Box className="hover-line">
-            <NavLink to="/help" className={getNavLinkClass}>
-              Help
-            </NavLink>
+
+            {/* Desktop Menu */}
+            {!isMobile && (
+              <Stack direction="row" spacing={4} alignItems="center">
+                {navItems.map((item) => (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    style={({ isActive }) =>
+                      isActive ? activeStyle : inactiveStyle
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                ))}
+
+                <Basket
+                  cartItems={cartItems}
+                  onAdd={onAdd}
+                  onRemove={onRemove}
+                  onDelete={onDelete}
+                  onDeleteAll={onDeleteAll}
+                />
+
+                {/* Auth Section */}
+                {!authMember ? (
+                  <Stack direction="row" spacing={1.5}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => setSignupOpen(true)}
+                      sx={{ borderRadius: 3 }}
+                    >
+                      Sign Up
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setLoginOpen(true)}
+                      sx={{ borderRadius: 3 }}
+                    >
+                      Login
+                    </Button>
+                  </Stack>
+                ) : (
+                  <IconButton onClick={handleLogoutClick}>
+                    <Avatar src={avatarSrc} alt={authMember.userNick} />
+                  </IconButton>
+                )}
+              </Stack>
+            )}
+
+            {/* Mobile Menu Button */}
+            {isMobile && (
+              <IconButton onClick={() => setMobileMenuOpen(true)} size="large">
+                <MenuIcon />
+              </IconButton>
+            )}
+          </Toolbar>
+        </Container>
+      </AppBar>
+
+      {/* Mobile Drawer */}
+      <Drawer
+        anchor="right"
+        open={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        PaperProps={{ sx: { width: 300 } }}
+      >
+        <Box sx={{ p: 3 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mb: 3,
+            }}
+          >
+            <img src="/img/Sportify.png" alt="Logo" style={{ height: 40 }} />
+            <IconButton onClick={() => setMobileMenuOpen(false)} size="large">
+              ×
+            </IconButton>
           </Box>
 
-          <Basket
-            cartItems={cartItems}
-            onAdd={onAdd}
-            onRemove={onRemove}
-            onDelete={onDelete}
-            onDeleteAll={onDeleteAll}
-          />
+          <List>
+            {navItems.map((item) => (
+              <ListItem key={item.path} disablePadding>
+                <NavLink
+                  to={item.path}
+                  style={{
+                    width: "100%",
+                    textDecoration: "none",
+                    color: "inherit",
+                  }}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {({ isActive }) => (
+                    <ListItemButton
+                      selected={isActive}
+                      sx={{ borderRadius: 2 }}
+                    >
+                      <ListItemIcon>{item.icon}</ListItemIcon>
+                      <ListItemText primary={item.label} />
+                    </ListItemButton>
+                  )}
+                </NavLink>
+              </ListItem>
+            ))}
 
-          {!authMember ? (
-            <Button
-              variant="contained"
-              className="login-button"
-              onClick={() => setLoginOpen(true)}
-            >
-              Login
-            </Button>
-          ) : (
-            <img
-              className="user-avatar"
-              src={
-                authMember?.userImage
-                  ? `${serverApi}/${authMember.userImage}`
-                  : "/icons/default-user.svg"
-              }
-              aria-haspopup="true"
-              onClick={handleLogoutClick}
-              style={{ cursor: "pointer" }}
-            />
-          )}
+            <ListItem disablePadding sx={{ mt: 2 }}>
+              <Basket
+                cartItems={cartItems}
+                onAdd={onAdd}
+                onRemove={onRemove}
+                onDelete={onDelete}
+                onDeleteAll={onDeleteAll}
+              />
+            </ListItem>
 
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleCloseLogout}
-            PaperProps={{
-              elevation: 0,
-              sx: {
-                overflow: "visible",
-                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                mt: 1.5,
-                "&:before": {
-                  content: '""',
-                  display: "block",
-                  position: "absolute",
-                  top: 0,
-                  right: 14,
-                  width: 10,
-                  height: 10,
-                  bgcolor: "background.paper",
-                  transform: "translateY(-50%) rotate(45deg)",
-                  zIndex: 0,
-                },
-              },
-            }}
-            transformOrigin={{ horizontal: "right", vertical: "top" }}
-            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-          >
-            <MenuItem onClick={handleLogoutRequest}>
-              <ListItemIcon>
-                <Logout fontSize="small" style={{ color: "blue" }} />
-              </ListItemIcon>
-              Logout
-            </MenuItem>
-          </Menu>
-        </Stack>
-      </Container>
-    </div>
+            {!authMember ? (
+              <>
+                <ListItem>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    onClick={() => {
+                      setSignupOpen(true);
+                      setMobileMenuOpen(false);
+                    }}
+                    sx={{ mt: 2 }}
+                  >
+                    Sign Up
+                  </Button>
+                </ListItem>
+                <ListItem>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    onClick={() => {
+                      setLoginOpen(true);
+                      setMobileMenuOpen(false);
+                    }}
+                    sx={{ mt: 1 }}
+                  >
+                    Login
+                  </Button>
+                </ListItem>
+              </>
+            ) : (
+              <ListItem sx={{ mt: 3, alignItems: "center" }}>
+                <Avatar src={avatarSrc} sx={{ mr: 2 }} />
+                <Typography fontWeight="bold">{authMember.userNick}</Typography>
+              </ListItem>
+            )}
+          </List>
+        </Box>
+      </Drawer>
+
+      {/* Logout Menu */}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleCloseLogout}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        PaperProps={{
+          sx: {
+            mt: 1.5,
+            boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+            borderRadius: 2,
+            "& .MuiMenuItem-root": {
+              py: 1.5,
+            },
+          },
+        }}
+      >
+        <MenuItem onClick={handleLogoutRequest}>
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Logout
+        </MenuItem>
+      </Menu>
+    </>
   );
 }
