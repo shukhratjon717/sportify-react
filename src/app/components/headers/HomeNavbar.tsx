@@ -18,6 +18,7 @@ import {
   ListItem,
   ListItemText,
   ListItemButton,
+  useTheme,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -64,7 +65,8 @@ export default function HomeNavbar(props: HomeNavbarProps) {
   } = props;
 
   const { authMember } = useGlobals();
-  const isMobile = useMediaQuery("(max-width: 900px)");
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const navItems = [
@@ -83,34 +85,48 @@ export default function HomeNavbar(props: HomeNavbarProps) {
     ? `${serverApi}/${authMember.userImage}`
     : "/icons/default-user.svg";
 
-  const activeStyle = { color: "#1db954", fontWeight: 700 };
-  const inactiveStyle = { color: "inherit", fontWeight: 500 };
+  const activeStyle = {
+    color: theme.palette.primary.main,
+    fontWeight: 700,
+    textDecoration: "none",
+  };
+  const inactiveStyle = {
+    color: theme.palette.text.primary,
+    fontWeight: 500,
+    textDecoration: "none",
+    transition: "color 0.2s",
+  };
 
   return (
     <>
       {/* Top Navbar */}
       <AppBar
-        position="static"
+        position="sticky"
         color="transparent"
         elevation={0}
-        sx={{ bgcolor: "#fff", py: 1 }}
+        sx={{
+          background: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(12px)",
+          borderBottom: "1px solid rgba(0,0,0,0.05)",
+          py: 1,
+        }}
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
             {/* Logo */}
-            <Box>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
               <NavLink to="/">
                 <img
                   src="/img/Sportify.png"
                   alt="Sportify Logo"
-                  style={{ height: 50, borderRadius: 8 }}
+                  style={{ height: 45, borderRadius: 8 }}
                 />
               </NavLink>
             </Box>
 
             {/* Desktop Navigation */}
             {!isMobile && (
-              <Stack direction="row" spacing={5} alignItems="center">
+              <Stack direction="row" spacing={4} alignItems="center">
                 {navItems.map((item) => (
                   <NavLink
                     key={item.path}
@@ -119,7 +135,15 @@ export default function HomeNavbar(props: HomeNavbarProps) {
                       isActive ? activeStyle : inactiveStyle
                     }
                   >
-                    {item.label}
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        "&:hover": { color: theme.palette.primary.main },
+                        fontSize: "0.95rem",
+                      }}
+                    >
+                      {item.label}
+                    </Typography>
                   </NavLink>
                 ))}
 
@@ -132,25 +156,35 @@ export default function HomeNavbar(props: HomeNavbarProps) {
                 />
 
                 {!authMember ? (
-                  <Stack direction="row" spacing={1.5}>
+                  <Stack direction="row" spacing={2}>
                     <Button
-                      variant="outlined"
-                      onClick={() => setSignupOpen(true)}
-                      sx={{ borderRadius: 3 }}
-                    >
-                      Sign Up
-                    </Button>
-                    <Button
-                      variant="contained"
+                      variant="text"
+                      color="inherit"
                       onClick={() => setLoginOpen(true)}
-                      sx={{ borderRadius: 3 }}
+                      sx={{ fontWeight: 600 }}
                     >
                       Login
                     </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setSignupOpen(true)}
+                      sx={{
+                        borderRadius: "50px",
+                        px: 3,
+                        boxShadow: "0 4px 14px 0 rgba(46, 204, 113, 0.4)",
+                      }}
+                    >
+                      Sign Up
+                    </Button>
                   </Stack>
                 ) : (
-                  <IconButton onClick={handleLogoutClick}>
-                    <Avatar src={avatarSrc} alt={authMember.userNick} />
+                  <IconButton onClick={handleLogoutClick} sx={{ p: 0 }}>
+                    <Avatar
+                      src={avatarSrc}
+                      alt={authMember.userNick}
+                      sx={{ width: 40, height: 40, border: "2px solid #2ecc71" }}
+                    />
                   </IconButton>
                 )}
               </Stack>
@@ -158,7 +192,11 @@ export default function HomeNavbar(props: HomeNavbarProps) {
 
             {/* Mobile Menu Icon */}
             {isMobile && (
-              <IconButton onClick={() => setMobileMenuOpen(true)} size="large">
+              <IconButton
+                onClick={() => setMobileMenuOpen(true)}
+                size="large"
+                color="inherit"
+              >
                 <MenuIcon />
               </IconButton>
             )}
@@ -171,7 +209,13 @@ export default function HomeNavbar(props: HomeNavbarProps) {
         anchor="right"
         open={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
-        PaperProps={{ sx: { width: 300 } }}
+        PaperProps={{
+          sx: {
+            width: 280,
+            background: "#ffffff",
+            borderLeft: "1px solid rgba(0,0,0,0.1)",
+          },
+        }}
       >
         <Box sx={{ p: 3 }}>
           <Box
@@ -179,10 +223,10 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              mb: 3,
+              mb: 4,
             }}
           >
-            <img src="/img/Sportify.png" alt="Logo" style={{ height: 40 }} />
+            <img src="/img/Sportify.png" alt="Logo" style={{ height: 35 }} />
             <IconButton onClick={() => setMobileMenuOpen(false)} size="large">
               ×
             </IconButton>
@@ -190,7 +234,7 @@ export default function HomeNavbar(props: HomeNavbarProps) {
 
           <List>
             {navItems.map((item) => (
-              <ListItem key={item.path} disablePadding>
+              <ListItem key={item.path} disablePadding sx={{ mb: 1 }}>
                 <NavLink
                   to={item.path}
                   style={{
@@ -203,17 +247,28 @@ export default function HomeNavbar(props: HomeNavbarProps) {
                   {({ isActive }) => (
                     <ListItemButton
                       selected={isActive}
-                      sx={{ borderRadius: 2 }}
+                      sx={{
+                        borderRadius: 2,
+                        "&.Mui-selected": {
+                          bgcolor: "rgba(46, 204, 113, 0.15)",
+                          color: "#2ecc71",
+                          "& .MuiListItemIcon-root": { color: "#2ecc71" },
+                        },
+                      }}
                     >
-                      <ListItemIcon>{item.icon}</ListItemIcon>
-                      <ListItemText primary={item.label} />
+                      <ListItemIcon sx={{ minWidth: 40 }}>
+                        {item.icon}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={item.label}
+                        primaryTypographyProps={{ fontWeight: 600 }}
+                      />
                     </ListItemButton>
                   )}
                 </NavLink>
               </ListItem>
             ))}
 
-            {/* Basket */}
             <ListItem sx={{ mt: 2 }}>
               <Basket
                 cartItems={cartItems}
@@ -224,34 +279,32 @@ export default function HomeNavbar(props: HomeNavbarProps) {
               />
             </ListItem>
 
-            {/* Auth Buttons */}
             {!authMember ? (
-              <>
-                <ListItem>
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    onClick={() => {
-                      setSignupOpen(true);
-                      setMobileMenuOpen(false);
-                    }}
-                  >
-                    Sign Up
-                  </Button>
-                </ListItem>
-                <ListItem>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    onClick={() => {
-                      setLoginOpen(true);
-                      setMobileMenuOpen(false);
-                    }}
-                  >
-                    Login
-                  </Button>
-                </ListItem>
-              </>
+              <Box sx={{ mt: 3, px: 2 }}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    setSignupOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                  sx={{ mb: 2 }}
+                >
+                  Sign Up
+                </Button>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  color="inherit"
+                  onClick={() => {
+                    setLoginOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  Login
+                </Button>
+              </Box>
             ) : (
               <ListItem sx={{ mt: 3 }}>
                 <Avatar src={avatarSrc} sx={{ mr: 2 }} />
@@ -271,59 +324,82 @@ export default function HomeNavbar(props: HomeNavbarProps) {
           sx: {
             mt: 1,
             borderRadius: 2,
+            background: "#ffffff",
+            border: "1px solid rgba(0,0,0,0.1)",
             boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
           },
         }}
       >
         <MenuItem onClick={handleLogoutRequest}>
           <ListItemIcon>
-            <Logout fontSize="small" />
+            <Logout fontSize="small" sx={{ color: "text.secondary" }} />
           </ListItemIcon>
           Logout
         </MenuItem>
       </Menu>
 
-      {/* ⭐ NEW: Hero Section with Background Image */}
+      {/* Hero Section */}
       <Box
         sx={{
           position: "relative",
-          py: { xs: 10, md: 14 },
+          height: { xs: "60vh", md: "80vh" },
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           textAlign: "center",
           color: "white",
-
           backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-
           backgroundImage:
-            "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('/img/hero.jpg')",
-          minHeight: { xs: 260, md: 420 },
+            "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.1)), url('/img/hero.jpg')",
         }}
       >
         <Container maxWidth="lg">
           <Typography
-            variant="h3"
-            fontWeight={900}
+            variant="h1"
             sx={{
-              fontSize: { xs: "2.7rem", md: "4.5rem" },
+              fontSize: { xs: "3rem", md: "5rem" },
               mb: 2,
-              textShadow: "0px 4px 15px rgba(0,0,0,0.7)",
+              textShadow: "0px 4px 20px rgba(0,0,0,0.4)",
+              background: "linear-gradient(45deg, #ffffff 30%, #2ecc71 90%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
             }}
           >
-            Discover Trends with Sportify
+            Discover Trends
+            <br />
+            with Sportify
           </Typography>
 
           <Typography
-            variant="h6"
+            variant="h5"
             sx={{
-              fontWeight: 500,
-              fontSize: { xs: "1.2rem", md: "1.5rem" },
-              opacity: 0.95,
-              textShadow: "0px 3px 12px rgba(0,0,0,0.6)",
+              mb: 4,
+              opacity: 0.9,
+              maxWidth: "600px",
+              mx: "auto",
+              textShadow: "0px 2px 10px rgba(0,0,0,0.3)",
             }}
           >
-            Premium Sportswear • Fast Delivery • Best Prices
+            Premium sportswear designed for performance and style.
+            <br />
+            Fast delivery and best prices guaranteed.
           </Typography>
+
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            href="/products"
+            sx={{
+              fontSize: "1.1rem",
+              px: 5,
+              py: 1.5,
+              borderRadius: "50px",
+            }}
+          >
+            Shop Now
+          </Button>
         </Container>
       </Box>
     </>

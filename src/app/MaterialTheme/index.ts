@@ -1,66 +1,97 @@
 import { createTheme } from "@mui/material/styles";
-import { common } from "@mui/material/colors";
 import shadow from "./shadow";
 import typography from "./typography";
-import { maxWidth } from "@mui/system";
 
 /**
- * LIGHT THEME (DEFAULT)
+ * VIBRANT LIGHT THEME
  */
-const light = {
+const lightTheme = createTheme({
   palette: {
-    type: "light",
+    mode: "light",
     background: {
-      default: "#f8f8ff",
-      paper: common.white,
+      default: "#f4f7f6", // Soft cool gray/white
+      paper: "#ffffff",
     },
     primary: {
-      contrastText: "#d7b586",
-      main: "#343434",
+      main: "#2ecc71", // Vibrant Emerald Green
+      contrastText: "#ffffff",
     },
     secondary: {
-      contrastText: "#343434",
-      main: "#d7b586",
+      main: "#3498db", // Bright Blue
+      contrastText: "#ffffff",
     },
     text: {
-      primary: "#343434",
-      secondary: "#d7b586",
-      dark: common.black,
+      primary: "#2c3e50", // Dark Blue-Gray for good contrast
+      secondary: "#7f8c8d",
+    },
+    action: {
+      hover: "rgba(46, 204, 113, 0.08)",
+      selected: "rgba(46, 204, 113, 0.16)",
     },
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        html: { height: "100%" },
+        body: {
+          background: "#f4f7f6",
+          height: "100%",
+          minHeight: "100%",
+        },
+      },
+    },
     MuiContainer: {
       styleOverrides: {
         root: {
           height: "100%",
         },
-      },
-    },
-    MuiCssBaseline: {
-      styleOverrides: {
-        html: { height: "100%" },
-        body: { background: "#f4f6f8", height: "100%", minHeight: "100%" },
-      },
-    },
-  },
-  shadow,
-  typography,
-};
-
-// A custom theme for this app
-let theme = createTheme(light);
-theme = createTheme(theme, {
-  components: {
-    MuiContainer: {
-      styleOverrides: {
         maxWidthLg: {
-          [theme.breakpoints.up("lg")]: {
+          "@media (min-width: 1200px)": {
             maxWidth: "1300px",
           },
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "50px",
+          textTransform: "none",
+          fontWeight: 700,
+          padding: "10px 24px",
+          boxShadow: "none",
+        },
+        containedPrimary: {
+          boxShadow: "0 4px 14px 0 rgba(46, 204, 113, 0.39)",
+          "&:hover": {
+            boxShadow: "0 6px 20px 0 rgba(46, 204, 113, 0.23)",
+          },
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        rounded: {
+          borderRadius: "16px",
+        },
+        elevation1: {
+          boxShadow: "0 4px 20px 0 rgba(0,0,0,0.05)",
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          backdropFilter: "blur(12px)",
+          color: "#2c3e50",
+          boxShadow: "0 1px 0 0 rgba(0,0,0,0.05)",
+        },
+      },
+    },
   },
+  typography,
+  shadows: shadow as any,
 });
 
-export default theme;
+export default lightTheme;

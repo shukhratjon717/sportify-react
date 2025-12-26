@@ -18,6 +18,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  useTheme,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -26,6 +27,7 @@ import {
   Category,
   Help,
   Person,
+  Receipt,
 } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
@@ -63,14 +65,18 @@ export default function OtherNavbar(props: OtherNavbarProps) {
   } = props;
 
   const { authMember } = useGlobals();
-  const isMobile = useMediaQuery("(max-width: 900px)");
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const navItems = [
     { label: "Home", path: "/", icon: <Home /> },
     { label: "Products", path: "/products", icon: <Category /> },
     ...(authMember
-      ? [{ label: "My Page", path: "/user-page", icon: <Person /> }]
+      ? [
+          { label: "Orders", path: "/orders", icon: <Receipt /> },
+          { label: "My Page", path: "/user-page", icon: <Person /> },
+        ]
       : []),
     { label: "Help", path: "/help", icon: <Help /> },
   ];
@@ -79,46 +85,62 @@ export default function OtherNavbar(props: OtherNavbarProps) {
     ? `${serverApi}/${authMember.userImage}`
     : "/icons/default-user.svg";
 
-  const activeStyle = { color: "#1db954", fontWeight: 700 };
-  const inactiveStyle = { color: "inherit", fontWeight: 500 };
+  const activeStyle = {
+    color: theme.palette.primary.main,
+    fontWeight: 700,
+    textDecoration: "none",
+  };
+  const inactiveStyle = {
+    color: theme.palette.text.primary,
+    fontWeight: 500,
+    textDecoration: "none",
+    transition: "color 0.2s",
+  };
 
   return (
     <>
-      {/* Top Promo Bar */}
+      {/* Promo Bar */}
       <Box
         sx={{
-          bgcolor: "#1db954",
+          background: "linear-gradient(90deg, #2ecc71 0%, #27ae60 100%)",
           color: "white",
+          py: 0.5,
           textAlign: "center",
-          py: 1,
-          fontSize: { xs: "0.85rem", sm: "1rem" },
+          fontSize: "0.85rem",
           fontWeight: 600,
         }}
       >
-        Use Code <strong>Sportify717</strong> for 10% off your first order
+        <Container>
+          Free shipping on orders over $100! 🚀
+        </Container>
       </Box>
 
       {/* Main Navbar */}
       <AppBar
-        position="static"
+        position="sticky"
         color="transparent"
         elevation={0}
-        sx={{ bgcolor: "#fff", py: 1 }}
+        sx={{
+          background: "rgba(255, 255, 255, 0.9)",
+          backdropFilter: "blur(12px)",
+          borderBottom: "1px solid rgba(0,0,0,0.05)",
+          py: 1,
+        }}
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
             {/* Logo */}
-            <Box>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
               <NavLink to="/">
                 <img
                   src="/img/Sportify.png"
                   alt="Sportify Logo"
-                  style={{ height: 48, borderRadius: 8 }}
+                  style={{ height: 45, borderRadius: 8 }}
                 />
               </NavLink>
             </Box>
 
-            {/* Desktop Menu */}
+            {/* Desktop Navigation */}
             {!isMobile && (
               <Stack direction="row" spacing={4} alignItems="center">
                 {navItems.map((item) => (
@@ -129,7 +151,15 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                       isActive ? activeStyle : inactiveStyle
                     }
                   >
-                    {item.label}
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        "&:hover": { color: theme.palette.primary.main },
+                        fontSize: "0.95rem",
+                      }}
+                    >
+                      {item.label}
+                    </Typography>
                   </NavLink>
                 ))}
 
@@ -143,35 +173,47 @@ export default function OtherNavbar(props: OtherNavbarProps) {
 
                 {/* Auth Section */}
                 {!authMember ? (
-                  <Stack direction="row" spacing={1.5}>
+                  <Stack direction="row" spacing={2}>
                     <Button
-                      variant="outlined"
-                      color="primary"
-                      onClick={() => setSignupOpen(true)}
-                      sx={{ borderRadius: 3 }}
+                      variant="text"
+                      color="inherit"
+                      onClick={() => setLoginOpen(true)}
+                      sx={{ fontWeight: 600 }}
                     >
-                      Sign Up
+                      Login
                     </Button>
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => setLoginOpen(true)}
-                      sx={{ borderRadius: 3 }}
+                      onClick={() => setSignupOpen(true)}
+                      sx={{
+                        borderRadius: "50px",
+                        px: 3,
+                        boxShadow: "0 4px 14px 0 rgba(46, 204, 113, 0.4)",
+                      }}
                     >
-                      Login
+                      Sign Up
                     </Button>
                   </Stack>
                 ) : (
-                  <IconButton onClick={handleLogoutClick}>
-                    <Avatar src={avatarSrc} alt={authMember.userNick} />
+                  <IconButton onClick={handleLogoutClick} sx={{ p: 0 }}>
+                    <Avatar
+                      src={avatarSrc}
+                      alt={authMember.userNick}
+                      sx={{ width: 40, height: 40, border: "2px solid #2ecc71" }}
+                    />
                   </IconButton>
                 )}
               </Stack>
             )}
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Icon */}
             {isMobile && (
-              <IconButton onClick={() => setMobileMenuOpen(true)} size="large">
+              <IconButton
+                onClick={() => setMobileMenuOpen(true)}
+                size="large"
+                color="inherit"
+              >
                 <MenuIcon />
               </IconButton>
             )}
@@ -184,7 +226,13 @@ export default function OtherNavbar(props: OtherNavbarProps) {
         anchor="right"
         open={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
-        PaperProps={{ sx: { width: 300 } }}
+        PaperProps={{
+          sx: {
+            width: 280,
+            background: "#ffffff",
+            borderLeft: "1px solid rgba(0,0,0,0.1)",
+          },
+        }}
       >
         <Box sx={{ p: 3 }}>
           <Box
@@ -192,10 +240,10 @@ export default function OtherNavbar(props: OtherNavbarProps) {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              mb: 3,
+              mb: 4,
             }}
           >
-            <img src="/img/Sportify.png" alt="Logo" style={{ height: 40 }} />
+            <img src="/img/Sportify.png" alt="Logo" style={{ height: 35 }} />
             <IconButton onClick={() => setMobileMenuOpen(false)} size="large">
               ×
             </IconButton>
@@ -203,12 +251,12 @@ export default function OtherNavbar(props: OtherNavbarProps) {
 
           <List>
             {navItems.map((item) => (
-              <ListItem key={item.path} disablePadding>
+              <ListItem key={item.path} disablePadding sx={{ mb: 1 }}>
                 <NavLink
                   to={item.path}
                   style={{
-                    width: "100%",
                     textDecoration: "none",
+                    width: "100%",
                     color: "inherit",
                   }}
                   onClick={() => setMobileMenuOpen(false)}
@@ -216,17 +264,29 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                   {({ isActive }) => (
                     <ListItemButton
                       selected={isActive}
-                      sx={{ borderRadius: 2 }}
+                      sx={{
+                        borderRadius: 2,
+                        "&.Mui-selected": {
+                          bgcolor: "rgba(46, 204, 113, 0.15)",
+                          color: "#2ecc71",
+                          "& .MuiListItemIcon-root": { color: "#2ecc71" },
+                        },
+                      }}
                     >
-                      <ListItemIcon>{item.icon}</ListItemIcon>
-                      <ListItemText primary={item.label} />
+                      <ListItemIcon sx={{ minWidth: 40 }}>
+                        {item.icon}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={item.label}
+                        primaryTypographyProps={{ fontWeight: 600 }}
+                      />
                     </ListItemButton>
                   )}
                 </NavLink>
               </ListItem>
             ))}
 
-            <ListItem disablePadding sx={{ mt: 2 }}>
+            <ListItem sx={{ mt: 2 }}>
               <Basket
                 cartItems={cartItems}
                 onAdd={onAdd}
@@ -237,36 +297,33 @@ export default function OtherNavbar(props: OtherNavbarProps) {
             </ListItem>
 
             {!authMember ? (
-              <>
-                <ListItem>
-                  <Button
-                    fullWidth
-                    variant="outlined"
-                    onClick={() => {
-                      setSignupOpen(true);
-                      setMobileMenuOpen(false);
-                    }}
-                    sx={{ mt: 2 }}
-                  >
-                    Sign Up
-                  </Button>
-                </ListItem>
-                <ListItem>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    onClick={() => {
-                      setLoginOpen(true);
-                      setMobileMenuOpen(false);
-                    }}
-                    sx={{ mt: 1 }}
-                  >
-                    Login
-                  </Button>
-                </ListItem>
-              </>
+              <Box sx={{ mt: 3, px: 2 }}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    setSignupOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                  sx={{ mb: 2 }}
+                >
+                  Sign Up
+                </Button>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  color="inherit"
+                  onClick={() => {
+                    setLoginOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  Login
+                </Button>
+              </Box>
             ) : (
-              <ListItem sx={{ mt: 3, alignItems: "center" }}>
+              <ListItem sx={{ mt: 3 }}>
                 <Avatar src={avatarSrc} sx={{ mr: 2 }} />
                 <Typography fontWeight="bold">{authMember.userNick}</Typography>
               </ListItem>
@@ -284,9 +341,11 @@ export default function OtherNavbar(props: OtherNavbarProps) {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         PaperProps={{
           sx: {
-            mt: 1.5,
-            boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+            mt: 1,
             borderRadius: 2,
+            background: "#ffffff",
+            border: "1px solid rgba(0,0,0,0.1)",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
             "& .MuiMenuItem-root": {
               py: 1.5,
             },
@@ -295,7 +354,7 @@ export default function OtherNavbar(props: OtherNavbarProps) {
       >
         <MenuItem onClick={handleLogoutRequest}>
           <ListItemIcon>
-            <Logout fontSize="small" />
+            <Logout fontSize="small" sx={{ color: "text.secondary" }} />
           </ListItemIcon>
           Logout
         </MenuItem>
