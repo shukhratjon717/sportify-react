@@ -1,158 +1,162 @@
-import {
-  Box,
-  Container,
-  Typography,
-  CircularProgress,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import { useGlobals } from "../../hooks/useGlobals";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-interface Order {
-  id: string;
-  productName: string;
-  price: number;
-  quantity: number;
-  date: string; // Added for realism
-  status: string; // Added for realism
-}
+import { TabContext, TabList } from "@mui/lab";
+import { Tab } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import OrderService from "../../services/OrderService";
+import { OrderInquiry } from "../../../lib/types/order";
+import { OrderStatus } from "../../../lib/enums/order.enum";
+import {
+  setPausedOrders,
+  setProcessOrders,
+  setFinishedOrders,
+} from "./slice";
+import PausedOrders from "./PausedOrders";
+import ProcessOrders from "./ProcessOrders";
+import FinishedOrders from "./FinishedOrders";
+import "../../../css/order.css";
 
 export default function UserOrders() {
-  const { authMember } = useGlobals();
+  const { authMember, orderBuilder } = useGlobals();
   const navigate = useNavigate();
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [value, setValue] = useState("1");
+  const dispatch = useDispatch<Dispatch>();
 
   useEffect(() => {
     if (!authMember) navigate("/", { replace: true });
   }, [authMember, navigate]);
 
   useEffect(() => {
-    if (authMember) {
-      setLoading(true);
-      // Simulate API fetch; replace with real API call (e.g., fetchOrders())
-      setTimeout(() => {
-        setOrders([
-          {
-            id: "1",
-            productName: "T-Shirt",
-            price: 25,
-            quantity: 2,
-            date: "2023-10-01",
-            status: "Shipped",
-          },
-          {
-            id: "2",
-            productName: "Sneakers",
-            price: 120,
-            quantity: 1,
-            date: "2023-09-15",
-            status: "Pending",
-          },
-          {
-            id: "3",
-            productName: "Backpack",
-            price: 50,
-            quantity: 1,
-            date: "2023-11-20",
-            status: "Delivered",
-          },
-        ]);
-        setLoading(false);
-      }, 500);
-    }
-  }, [authMember]);
+    const order = new OrderService();
+
+    // Fetch Paused Orders
+    const pausedInquiry: OrderInquiry = {
+      page: 1,
+      limit: 10,
+      orderStatus: OrderStatus.PAUSE,
+    };
+    order
+      .getMyOrders(pausedInquiry)
+      .then((data) => dispatch(setPausedOrders(data)))
+      .catch((err) => console.log(err));
+
+    // Fetch Process Orders
+    const processInquiry: OrderInquiry = {
+      page: 1,
+      limit: 10,
+      orderStatus: OrderStatus.PROCESS,
+    };
+    order
+      .getMyOrders(processInquiry)
+      .then((data) => dispatch(setProcessOrders(data)))
+      .catch((err) => console.log(err));
+
+    // Fetch Finished Orders
+    const finishedInquiry: OrderInquiry = {
+      page: 1,
+      limit: 10,
+      orderStatus: OrderStatus.FINISH,
+    };
+    order
+      .getMyOrders(finishedInquiry)
+      .then((data) => dispatch(setFinishedOrders(data)))
+      .catch((err) => console.log(err));
+  }, [authMember, orderBuilder, dispatch]);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
+
+  if (!authMember) return null;
 
   return (
     <Container maxWidth="lg" sx={{ mt: 5, mb: 5 }}>
-      <Typography
-        variant="h4"
-        component="h1"
-        gutterBottom
-        sx={{ fontWeight: 600, color: "var(--text-dark)" }}
+      <Box
+        sx={{
+          mb: 4,
+          textAlign: "center",
+        }}
       >
-        Your Orders
-      </Typography>
-
-      {loading ? (
-        <Box display="flex" justifyContent="center" mt={4}>
-          <CircularProgress color="primary" />
-        </Box>
-      ) : orders.length === 0 ? (
-        <Typography variant="body1" color="textSecondary" sx={{ mt: 2 }}>
-          No orders found. Start shopping to see your orders here!
-        </Typography>
-      ) : (
-        <TableContainer
-          component={Paper}
-          sx={{ mt: 3, boxShadow: "var(--shadow-sm)", borderRadius: 2 }}
+        <Box
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 2,
+            background: "linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)",
+            padding: "12px 32px",
+            borderRadius: "50px",
+            boxShadow: "0 8px 24px rgba(46, 204, 113, 0.25)",
+            mb: 2,
+          }}
         >
-          <Table aria-label="orders table">
-            <TableHead>
-              <TableRow sx={{ bgcolor: "var(--bg-accent)" }}>
-                <TableCell>
-                  <Typography fontWeight={600}>Order ID</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography fontWeight={600}>Product</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography fontWeight={600}>Quantity</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography fontWeight={600}>Price</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography fontWeight={600}>Date</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography fontWeight={600}>Status</Typography>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {orders.map((order) => (
-                <TableRow
-                  key={order.id}
-                  sx={{
-                    "&:hover": { bgcolor: "#f5f5f5" },
-                    transition: "background-color var(--transition)",
-                  }}
-                >
-                  <TableCell>{order.id}</TableCell>
-                  <TableCell>{order.productName}</TableCell>
-                  <TableCell>{order.quantity}</TableCell>
-                  <TableCell>${order.price.toFixed(2)}</TableCell>
-                  <TableCell>{order.date}</TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color:
-                          order.status === "Shipped"
-                            ? "green"
-                            : order.status === "Pending"
-                            ? "orange"
-                            : "blue",
-                        fontWeight: 500,
-                      }}
-                    >
-                      {order.status}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
+          <Box
+            sx={{
+              fontSize: "32px",
+            }}
+          >
+            📦
+          </Box>
+          <Box
+            sx={{
+              fontSize: "28px",
+              fontWeight: 700,
+              color: "#ffffff",
+              letterSpacing: "-0.5px",
+            }}
+          >
+            My Orders
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            fontSize: "15px",
+            color: "#7f8c8d",
+            fontWeight: 500,
+          }}
+        >
+          Track and manage all your orders in one place
+        </Box>
+      </Box>
+
+      <Stack className="order-page">
+        <TabContext value={value}>
+          <Box className="order-nav-frame">
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList
+                onChange={handleChange}
+                aria-label="order tabs"
+                TabIndicatorProps={{
+                  style: { display: "none" },
+                }}
+                sx={{
+                  "& .MuiTab-root": {
+                    textTransform: "none",
+                    fontWeight: 600,
+                    fontSize: "16px",
+                    minWidth: 120,
+                  },
+                  "& .Mui-selected": {
+                    color: "primary.main",
+                  },
+                }}
+              >
+                <Tab label="Paused Orders" value="1" />
+                <Tab label="Process Orders" value="2" />
+                <Tab label="Finished Orders" value="3" />
+              </TabList>
+            </Box>
+          </Box>
+
+          <Stack className="order-main-content">
+            <PausedOrders setValue={setValue} />
+            <ProcessOrders setValue={setValue} />
+            <FinishedOrders />
+          </Stack>
+        </TabContext>
+      </Stack>
     </Container>
   );
 }

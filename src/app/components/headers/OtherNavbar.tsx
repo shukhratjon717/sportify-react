@@ -28,12 +28,14 @@ import {
   Help,
   Person,
   Receipt,
+  AdminPanelSettings,
 } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
 import { CartItem } from "../../../lib/types/search";
 import { useGlobals } from "../../hooks/useGlobals";
 import { serverApi } from "../../../lib/config";
+import { UserType } from "../../../lib/enums/user.enum";
 
 interface OtherNavbarProps {
   cartItems: CartItem[];
@@ -163,6 +165,27 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                   </NavLink>
                 ))}
 
+                {/* Admin Link - uses regular anchor since it's a backend route */}
+                <a
+                  href="http://localhost:4004/admin/login"
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: theme.palette.text.primary,
+                      fontWeight: 500,
+                      fontSize: "0.95rem",
+                      "&:hover": { color: theme.palette.primary.main },
+                      transition: "color 0.2s",
+                    }}
+                  >
+                    Admin
+                  </Typography>
+                </a>
+
                 <Basket
                   cartItems={cartItems}
                   onAdd={onAdd}
@@ -285,6 +308,33 @@ export default function OtherNavbar(props: OtherNavbarProps) {
                 </NavLink>
               </ListItem>
             ))}
+
+            {/* Admin Link - uses regular link since it's a backend route */}
+            <ListItem disablePadding sx={{ mb: 1 }}>
+              <a
+                href="http://localhost:4004/admin/login"
+                style={{
+                  textDecoration: "none",
+                  width: "100%",
+                  color: "inherit",
+                }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <ListItemButton
+                  sx={{
+                    borderRadius: 2,
+                  }}
+                >
+                  <ListItemIcon sx={{ minWidth: 40 }}>
+                    <AdminPanelSettings />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Admin"
+                    primaryTypographyProps={{ fontWeight: 600 }}
+                  />
+                </ListItemButton>
+              </a>
+            </ListItem>
 
             <ListItem sx={{ mt: 2 }}>
               <Basket
